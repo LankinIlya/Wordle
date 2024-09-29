@@ -25,7 +25,9 @@ public class GameController {
     @PostMapping("/try_word")
     public TryWordResponseDto tryWord(@RequestBody TryWordDto tryWordDto) {
         try {
-            return new TryWordResponseDto(gameService.tryWord(tryWordDto.word()));
+            return new TryWordResponseDto(
+                gameService.tryWord(tryWordDto.word())
+            );
         }
         catch (WordNotFoundException ex) {
             return new TryWordResponseDto(1);
