@@ -18,11 +18,17 @@ def list_files_recursive(path='.'):
 directory_path = '../'
 list_files_recursive(directory_path)
 
+any_errors = False
+
 for file in files_list:
     f = open(file, 'r')
     lines = f.readlines()
     for line in lines:
         if len(line) > 80:
             print(file, "too long")
-            exit(1)
+            any_errors = True
+
+if any_errors:
+    exit(1)
+
 print("All files are OK")
