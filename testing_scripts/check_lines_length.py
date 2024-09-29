@@ -1,12 +1,18 @@
 import os
 
 files_list = []
-
+forbidden_prefixes = ["."]
+forbidden_files = ["gradlew.bat", "gradle"]
 
 def list_files_recursive(path='.'):
     for entry in os.listdir(path):
-        if entry[0] == '.':
-            return
+        for prefix in forbidden_prefixes:
+            if entry[:len(prefix)] == prefix:
+                return
+        for file in forbidden_files:
+            if entry == file:
+                return
+
         full_path = os.path.join(path, entry)
         if os.path.isdir(full_path):
             list_files_recursive(full_path)
@@ -27,6 +33,7 @@ for file in files_list:
         if len(line) > 80:
             print(file, "too long")
             any_errors = True
+            break
 
 if any_errors:
     exit(1)

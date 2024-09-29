@@ -5,7 +5,6 @@ import com.wordle.demo.exception.WordNotFoundException;
 import com.wordle.demo.repository.WordRepository;
 import com.wordle.demo.repository.entity.WordEntity;
 import com.wordle.demo.service.model.Word;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -62,7 +61,8 @@ public class GameServiceImpl implements GameService{
         System.out.println("Amount of words in repository: " + amount);
         int index = new Random().nextInt((int)amount);
         Pageable pageable = PageRequest.of(index, 1);
-        List<WordEntity> result = wordRepository.findAll(pageable).getContent();
+        List<WordEntity> result = wordRepository.findAll(pageable)
+                                                .getContent();
 
         try {
             WordEntity wordEntity = result.get(0);

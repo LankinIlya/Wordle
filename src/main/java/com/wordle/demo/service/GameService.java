@@ -9,5 +9,6 @@ import java.util.List;
 public interface GameService {
     public void newGame();
 
-    public List<Integer> tryWord(String guess) throws WordNotFoundException, IncorrectGuessException;
+    public List<Integer> tryWord(String guess)
+            throws WordNotFoundException, IncorrectGuessException;
 }
