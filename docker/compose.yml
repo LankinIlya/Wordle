@@ -1,0 +1,31 @@
+name: wordle-app
+services:
+  db:
+    image: "postgres:14-alpine"
+    container_name: db
+    restart: always
+    environment:
+      - POSTGRES_DB=DB_Words
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5433:5432"
+
+  wordle-backend:
+    container_name: wordle-backend
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: ${DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      JAVA_OPTS: >-
+        -XX:+UseZGC
+        -Xms256M
+        -Xmx2G
+      SPRING_PROFILES_ACTIVE: "local"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
