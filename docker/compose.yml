@@ -1,3 +1,4 @@
+
 name: wordle-app
 services:
   db:
@@ -15,7 +16,7 @@ services:
     container_name: wordle-backend
     build:
       context: ../
-      dockerfile: docker/Dockerfile
+      dockerfile: /docker/backend/Dockerfile
     environment:
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
@@ -29,3 +30,12 @@ services:
       - "8080:8080"
     depends_on:
       - db
+
+
+  wordle-frontend:
+    container_name: wordle-frontend
+    build:
+      context: ../frontend/
+      dockerfile: ../docker/frontend/Dockerfile
+    ports:
+      - "3000:3000"
