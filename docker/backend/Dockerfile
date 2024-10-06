@@ -1,6 +1,6 @@
 FROM gradle:jdk17 AS builder
 WORKDIR /usr/app/
-COPY . .
+COPY ../.. .
 RUN gradle build
 
 
