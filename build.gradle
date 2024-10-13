@@ -27,6 +27,7 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-security"
 	implementation group: 'org.springframework.security', name: 'spring-security-web', version: '6.3.3'
 	implementation group: 'org.springframework.security', name: 'spring-security-config', version: '6.3.3'
+	implementation group: 'org.liquibase', name: 'liquibase-core', version: '4.28.0'
 	compileOnly group: 'org.projectlombok', name: 'lombok', version: '0.11.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

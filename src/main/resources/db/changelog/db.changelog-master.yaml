@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-words-table.sql
+  - include:
+      file: db/changelog/changeset/create-users-table.sql
+  - include:
+      file: db/changelog/changeset/insert-words-1.sql
