@@ -9,6 +9,8 @@ services:
       - POSTGRES_DB=DB_Words
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
+    #volumes:
+    #  - ../infrastructure/db/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
     ports:
       - "5433:5432"
 
@@ -30,7 +32,6 @@ services:
       - "8080:8080"
     depends_on:
       - db
-
 
   wordle-frontend:
     container_name: wordle-frontend
