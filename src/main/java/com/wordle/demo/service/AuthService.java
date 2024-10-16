@@ -2,6 +2,7 @@ package com.wordle.demo.service;
 
 import com.wordle.demo.repository.UserRepository;
 import com.wordle.demo.repository.entity.UserEntity;
+import com.wordle.demo.service.model.MyUser;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,8 +16,8 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void addUser(UserEntity user) {
+    public void addUser(MyUser user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        repository.save(user);
+        repository.save(new UserEntity(user));
     }
 }

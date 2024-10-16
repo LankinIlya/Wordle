@@ -19,7 +19,7 @@ public class AuthController {
 
     @PostMapping("/new-user")
     public String addUser(@RequestBody UserDto userDto) {
-        authService.addUser(new UserEntity(userDto.login(), userDto.password()));
+        authService.addUser(new MyUser(userDto.login(), userDto.password()));
         return "User is saved";
     }
 }
