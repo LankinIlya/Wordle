@@ -18,7 +18,7 @@ for i in range(len(a)):
     else:
         a[i] += ';'
 
-f = open('..\\src\\main\\resources\\db\\changelog\\changeset\\insert-words-1.sql', 'w')
+f = open('../src/main/resources/db/changelog/changeset/insert-words-1.sql', 'w')
 
 f.write('--liquibase formatted sql\n\n')
 
