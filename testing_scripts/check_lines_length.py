@@ -4,7 +4,7 @@ files_list = []
 forbidden_prefixes = ["."]
 forbidden_suffixes = [".ico", ".png", ".jpg", ".bmp" , ".jpeg"]
 forbidden_files = ["gradlew.bat", "gradle", "frontend", "gradlew",
-                   "HELP.md", "build.gradle"]
+                   "HELP.md", "build.gradle", "build"]
 
 def list_files_recursive(path='.'):
     for entry in os.listdir(path):
