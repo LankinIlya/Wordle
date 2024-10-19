@@ -1,6 +1,5 @@
 package com.wordle.demo.config;
 
-import com.wordle.demo.service.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -23,10 +22,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
     @Bean
-    public UserDetailsService userDetailsService () {
-        return new MyUserDetailsService();
-    }
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
             throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
@@ -35,16 +30,9 @@ public class SecurityConfig {
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
                 .logout(lOut -> {
                     lOut.logoutSuccessUrl("/")
-                        .permitAll();
+                            .permitAll();
                 })
                 .build();
-    }
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService());
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

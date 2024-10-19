@@ -17,7 +17,6 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
     public void addUser(MyUser user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         repository.save(new UserEntity(user));
     }
 }
