@@ -1,21 +1,41 @@
-import React from 'react';
+import React, {Dispatch} from 'react';
 import {Header} from './components/Header';
-import {Game} from './components/Game';
+import Game from './components/Game';
 import {Login} from './components/Login';
 import {Registration} from './components/Registration';
 import {SideBar} from "./components/SideBar";
+import {RootState, store} from "./store/store";
+import {ConnectedProps, connect} from "react-redux";
+import {UserAction, setUser} from "./types/UserTypes";
+
+const mapStateToProps = (state: RootState) => {
+    console.log("mapStateToProps")
+    console.log(state)
+    return {
+        currentUser: state.user.user,
+        game: state.game
+    }
+}
+
+const mapDispatch = (dispatch : Dispatch<UserAction>) => ({
+    setUser: (login: string) => dispatch(setUser(login))
+});
+
+const connector = connect(mapStateToProps, mapDispatch)
+
+type PropsFromRedux = ConnectedProps<typeof connector>
 
 enum Page { Game, Login, Registration}
 
-type AppProps = {
-
-};
+interface AppProps extends PropsFromRedux{
+}
 
 type AppState = {
     page: Page
 };
 
-export class App extends React.Component<AppProps, AppState>{
+class App extends React.Component<AppProps, AppState>{
+
     constructor(props: AppProps) {
         super(props);
         this.state = {
@@ -24,26 +44,28 @@ export class App extends React.Component<AppProps, AppState>{
         this.onClickPlay = this.onClickPlay.bind(this);
         this.onClickLogin = this.onClickLogin.bind(this);
         this.onClickRegistration = this.onClickRegistration.bind(this);
-    }
-    render() {
-        return (
-            <div className="App">
-                <Header onClickLogin={this.onClickLogin}
-                      onClickPlay={this.onClickPlay}
-                      onClickRegistration={this.onClickRegistration}
-                />
-                <div className={"container"}>
-                    <div className={"content"}>
-                        {this.renderContent()}
-                    </div>
-                    <SideBar />
-                </div>
 
-            </div>
-        );
     }
+        render() {
+            return (
+                <div className="App">
+                    <Header onClickLogin={this.onClickLogin}
+                          onClickPlay={this.onClickPlay}
+                          onClickRegistration={this.onClickRegistration}
+                    />
+                    <h1>{this.props.currentUser}</h1>
+                    <div className={"container"}>
+                        <div className={"content"}>
+                            {this.renderContent()}
+                        </div>
+                        <SideBar />
+                    </div>
+                </div>
+            );
+        }
 
     renderContent() {
+        console.log("page = " + localStorage.getItem("page"))
         switch (+this.state.page) {
         case Page.Game:
             return <Game />;
@@ -55,7 +77,6 @@ export class App extends React.Component<AppProps, AppState>{
     }
 
     onClickPlay() {
-        console.log("Play");
         this.setState({
             page: Page.Game
         });
@@ -74,4 +95,8 @@ export class App extends React.Component<AppProps, AppState>{
             page: Page.Registration
         });
     }
+
+
 }
+
+export default connector(App)
