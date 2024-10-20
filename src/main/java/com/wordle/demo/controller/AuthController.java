@@ -26,9 +26,16 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/new-user")
+    @CrossOrigin
     public String addUser(@RequestBody UserDto userDto) {
-        authService.addUser(new MyUser(userDto.login(), userDto.password()));
-        return "User is saved";
+        try {
+            MyUser user = userService.getUserByUsername(userDto.login());
+            return "not ok";
+        } catch(UsernameNotFoundException e) {
+            authService.addUser(new MyUser(userDto.login(), userDto.password()));
+            return "ok";
+        }
+
     }
 
     @PostMapping("/loginPage")

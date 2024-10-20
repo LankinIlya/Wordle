@@ -25,21 +25,26 @@ export class Login extends React.Component<LoginProps, LoginState> {
               .then(result => {
                 if(result === "ok") {
                     document.cookie = loginValue;
-                    alert("Successful login\nCurrent login: " + document.cookie);
+                    alert("Successful login\nCurrent login: "
+                    + document.cookie);
                 }
                 else {
-                    alert("Wrong login or password\nCurrent login: " + document.cookie);
+                    alert("Wrong login or password\nCurrent login: "
+                    + document.cookie);
                 }
               })
     }
 
     render() {
         return (<div>
-                    <input type="text" id="username" name="username" placeholder="Логин" /><br />
+                    <input type="text" id="username"
+                    name="username" placeholder="Логин" /><br />
 
-                    <input type="password" id="password" name="password" placeholder="Пароль" /><br />
+                    <input type="password" id="password" name="password"
+                    placeholder="Пароль" /><br />
 
-                    <button type="button" onClick={this.buttonClick} id="regButton">Войти</button>
+                    <button type="button" onClick={this.buttonClick}
+                    id="regButton">Войти</button>
                 </div>
         );
     }
