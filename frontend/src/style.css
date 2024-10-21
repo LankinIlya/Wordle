@@ -100,7 +100,7 @@ header a:hover {
   background-color: #1bc304;
 }
 
-.cell:hover[data-result="-1"][data-inputtingRow="true"] {
+.cell:hover[data-result="-1"][data-inputtingrow="true"] {
   transform: scale(1.06);
   transition: 200ms;
   background-color: #E0E0F0;
