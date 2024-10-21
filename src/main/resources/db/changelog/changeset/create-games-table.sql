@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS games (
     id bigint NOT NULL,
     user_id bigint,
     is_active boolean,
+    is_won boolean,
     word_id bigint,
     CONSTRAINT games_pkey PRIMARY KEY (id),
     CONSTRAINT user_fkey FOREIGN KEY (user_id) REFERENCES users(id),

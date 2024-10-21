@@ -1,4 +1,4 @@
 package com.wordle.demo.controller.dto;
 
-public record TryWordDto(int move, String word) {
+public record TryWordDto(Long gameId, int move, String word) {
 }

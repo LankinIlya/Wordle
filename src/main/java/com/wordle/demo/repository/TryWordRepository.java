@@ -16,5 +16,13 @@ public interface TryWordRepository extends JpaRepository<TryWordEntity, Long> {
                     "WHERE trywords.game_id = :game_id " +
                     "ORDER BY trywords.try_number"
     )
-    List<TryWordRepository> findByGameId(@Param("game_id") Long gameId);
+    List<TryWordEntity> findByGameId(@Param("game_id") Long gameId);
+
+    @Query(
+            nativeQuery = true,
+            value = "SELECT COUNT(*) " +
+                    "FROM trywords " +
+                    "WHERE trywords.game_id = :game_id "
+    )
+    Long getCountByGameId(@Param("game_id") Long gameId);
 }
