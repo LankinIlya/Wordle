@@ -1,4 +1,5 @@
 import React from "react";
+import {getLoginFromCookies} from "../utils/getLogin";
 
 type RegistrationProps = {
 
@@ -10,7 +11,7 @@ type RegistrationState = {
 
 export class Registration extends React.Component<RegistrationProps, RegistrationState> {
     constructor(props: RegistrationProps) {
-        super(props)
+        super(props);
 
         this.changePassword = this.changePassword.bind(this);
         this.changeLogin = this.changeLogin.bind(this);
@@ -86,14 +87,15 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             })
               .then(response => response.text())
               .then(result => {
-                if(result === "ok") {
-                    document.cookie = loginValue;
+                if(result !== "not ok") {
+                    document.cookie = "login=" + loginValue;
+                    document.cookie = "jwt=" + result;
                     alert("Successful registration\nCurrent login: "
-                    + document.cookie);
+                    + getLoginFromCookies());
                 }
                 else {
                     alert("This user already exists\nCurrent login: "
-                    + document.cookie);
+                    + getLoginFromCookies());
                 }
               })
     }
