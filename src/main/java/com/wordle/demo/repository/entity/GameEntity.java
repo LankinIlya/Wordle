@@ -17,12 +17,16 @@ public class GameEntity {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @Column(name = "is_won")
+    private Boolean isWon;
+
     @Column(name = "word_id")
     private Long wordId;
 
-    public GameEntity(Long userId, Boolean isActive, Long wordId) {
+    public GameEntity(Long userId, Boolean isActive, Boolean isWon, Long wordId) {
         this.userId = userId;
         this.isActive = isActive;
+        this.isWon = isWon;
         this.wordId = wordId;
     }
 
@@ -48,6 +52,14 @@ public class GameEntity {
 
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    public Boolean getWon() {
+        return isWon;
+    }
+
+    public void setWon(Boolean won) {
+        isWon = won;
     }
 
     public Long getWordId() {
