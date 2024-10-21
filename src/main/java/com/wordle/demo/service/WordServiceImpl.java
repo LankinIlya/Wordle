@@ -10,11 +10,7 @@ import java.util.Optional;
 
 @Service
 public class WordServiceImpl implements WordService {
-    private final WordRepository wordRepository;
-
-    public WordServiceImpl(WordRepository wordRepository) {
-        this.wordRepository = wordRepository;
-    }
+    private WordRepository wordRepository;
 
     @Override
     public Word findWordById(Long id) throws WordNotFoundException {

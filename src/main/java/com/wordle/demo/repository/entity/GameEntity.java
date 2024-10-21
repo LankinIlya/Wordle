@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "games")
+@NoArgsConstructor
 public class GameEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,13 +22,6 @@ public class GameEntity {
 
     @Column(name = "word_id")
     private Long wordId;
-
-    public GameEntity() {
-        userId = 0L;
-        isActive = true;
-        isWon = false;
-        wordId = 0L;
-    }
 
     public GameEntity(Long userId, Boolean isActive, Boolean isWon, Long wordId) {
         this.userId = userId;
