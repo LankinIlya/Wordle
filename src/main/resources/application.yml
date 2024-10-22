@@ -23,3 +23,6 @@ spring:
   logging:
     level:
       sql: INFO
+
+jwt:
+  secret: 90J#()JgGj0g9jg#G0G(J)3gj90gj390jg9g0j92g3g3

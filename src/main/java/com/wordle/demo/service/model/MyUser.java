@@ -5,8 +5,17 @@ import com.wordle.demo.repository.entity.UserEntity;
 import java.util.Objects;
 
 public final class MyUser {
+    private Long id;
     private String login;
     private String password;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getLogin() {
         return login;
@@ -25,10 +34,15 @@ public final class MyUser {
     }
 
 
-
     public MyUser(String login, String password) {
         this.login = login;
         this.password = password;
+    }
+
+    public MyUser(UserEntity userEntity) {
+        this.id = userEntity.getId();
+        this.login = userEntity.getLogin();
+        this.password = userEntity.getPassword();
     }
 
     public String login() {
