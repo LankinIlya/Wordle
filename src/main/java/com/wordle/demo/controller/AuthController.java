@@ -3,22 +3,15 @@ package com.wordle.demo.controller;
 import com.wordle.demo.controller.dto.UserDto;
 import com.wordle.demo.jwt.JwtTokenUtil;
 import com.wordle.demo.service.AuthService;
-import com.wordle.demo.repository.entity.UserEntity;
 import com.wordle.demo.service.UserService;
 import com.wordle.demo.service.model.MyUser;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails
+        .UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.SignatureException;
 
 @RestController
 @AllArgsConstructor
