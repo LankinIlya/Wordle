@@ -1,3 +1,5 @@
+import exp from "node:constants";
+
 export const NUMBER_OF_LETTERS = 5;
 export const NUMBER_OF_WORDS = 6;
 
@@ -20,6 +22,13 @@ export interface GameState {
         i: number,
         j: number
     }
+}
+
+export interface GameDto {
+    words: String[],
+    results: number[][],
+    isActive: boolean,
+    isWon: boolean
 }
 
 export enum GameActionTypes {

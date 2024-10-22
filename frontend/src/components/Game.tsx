@@ -6,7 +6,7 @@ import {
     addTry,
     backSpace, CellInfo,
     finishGame, focusCell,
-    GameAction,
+    GameAction, GameDto,
     GameState, NUMBER_OF_LETTERS,
     restartGame,
     sendWord,
@@ -14,6 +14,8 @@ import {
 } from "../types/GameTypes";
 import {isLetter} from "../utils/letters";
 import {div} from "../utils/math";
+// import http from "../http-common"
+import axios from "axios";
 
 const mapStateToProps = (state: RootState) => {
     return {
@@ -56,6 +58,28 @@ class Game extends React.Component<GameProps, ComponentGameState> {
         this.state = {
             divRef: React.createRef()
         }
+
+        // fetch('http://localhost:8080/game/get_game', {
+        //     method: 'GET',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // }).then((response) => {
+        //     console.log(response);
+        // });
+
+        // axios.get("https://reqres.in/api/users?page=2").then((response) => {
+        axios.get<GameDto>("http://localhost:8080/game/get_game").then((response) => {
+            console.log(response);
+            console.log(response.data);
+            document.cookie = `game_id=${response.data.game.id}`;
+        });
+        // axios.get("http://localhost:8080/game/get_game");
+        // http.get<GameDto>("game/get_game").then((response) => {
+        //     console.log(response);
+        //     console.log(response.data);
+        //     // document.cookie = `game_id=${response.data.game.id}`;
+        // });
     }
     componentDidMount() {
         this.state.divRef.current.focus()

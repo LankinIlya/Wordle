@@ -10,10 +10,6 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-function handleKeyEvent(event: KeyboardEvent<HTMLDivElement>) {
-    console.log(event.key);
-}
-
 root.render(
     <React.StrictMode>
         <Provider store={store}>

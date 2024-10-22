@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameDto {
+    private Long id;
     private List<String> words;
     private List<List<Integer>> results;
     private Boolean isActive;
@@ -17,6 +18,7 @@ public class GameDto {
 
     public GameDto(Game game, GameService gameService, WordService wordService)
             throws GameNotFoundException {
+        this.id = game.getId();
         this.words = new ArrayList<>();
         this.results = new ArrayList<>();
         this.isActive = game.getActive();
@@ -64,5 +66,13 @@ public class GameDto {
 
     public void setWon(Boolean won) {
         isWon = won;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

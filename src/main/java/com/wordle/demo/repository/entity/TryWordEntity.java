@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "trywords")
-@NoArgsConstructor
 public class TryWordEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,6 +19,9 @@ public class TryWordEntity {
 
     @Column(name = "try_number")
     private Long tryNumber;
+
+    public TryWordEntity() {
+    }
 
     public TryWordEntity(Long gameId, Long wordId, Long tryNumber) {
         this.gameId = gameId;
