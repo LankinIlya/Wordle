@@ -16,24 +16,8 @@ export class Login extends React.Component<LoginProps, LoginState> {
     }
 
     buttonClick() {
-        const loginValue = (document.getElementById("username") as HTMLInputElement).value;
-
-//         let data= {
-//             login: loginValue,
-//             password: (document.getElementById("password") as HTMLInputElement).value
-//         }
-//         const options = {
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//             with_credentials: true
-//         };
-//
-//         axios.post("http://localhost:8080/loginPage", data, options)
-//               .then((response: any) => {
-//                 console.log(response);
-//                 console.log(response.headers["cache-control"]);
-//               })
+        const loginValue = (document
+        .getElementById("username") as HTMLInputElement).value;
 
         fetch('http://localhost:8080/loginPage', {
               method: 'POST',
@@ -42,7 +26,8 @@ export class Login extends React.Component<LoginProps, LoginState> {
               },
               body: JSON.stringify({
                 login: loginValue,
-                password: (document.getElementById("password") as HTMLInputElement).value
+                password: (document
+                .getElementById("password") as HTMLInputElement).value
               })
             })
               .then(response => response.text())
