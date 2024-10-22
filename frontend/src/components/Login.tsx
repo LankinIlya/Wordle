@@ -48,8 +48,8 @@ export class Login extends React.Component<LoginProps, LoginState> {
               .then(response => response.text())
               .then(result => {
                 if(result !== "not ok") {
-                    document.cookie = "login=" + loginValue + ";sameSite=None;secure=false";
-                    document.cookie = "jwt=" + result + ";sameSite=None; secure=false";
+                    document.cookie = "login=" + loginValue;
+                    document.cookie = "jwt=" + result;
                     alert("Successful login\nCurrent login: "
                     + getLoginFromCookies());
                 }
