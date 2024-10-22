@@ -18,7 +18,7 @@ public interface GameRepository extends JpaRepository<GameEntity, Long> {
             nativeQuery = true,
             value = "SELECT * " +
                     "FROM games " +
-                    "WHERE games.user_d = :user_id AND games.is_active")
+                    "WHERE games.user_id = :user_id AND games.is_active")
     Optional<GameEntity> findByUserId(@Param("user_id") Long userId);
 
 
@@ -28,7 +28,7 @@ public interface GameRepository extends JpaRepository<GameEntity, Long> {
             nativeQuery = true,
             value = "UPDATE games " +
                     "SET is_active = false, " +
-                    "    is_won = :is_won" +
+                    "    is_won = :is_won " +
                     "WHERE games.id = :game_id")
     void finishGame(@Param("game_id") Long gameId, @Param("is_won") Boolean isWon);
 }
