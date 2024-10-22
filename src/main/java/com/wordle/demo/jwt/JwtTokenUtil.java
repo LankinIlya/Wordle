@@ -14,6 +14,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import static java.lang.Long.valueOf;
+
 @Component
 public class JwtTokenUtil implements Serializable {
     @Value("${jwt.secret}")
@@ -33,9 +35,14 @@ public class JwtTokenUtil implements Serializable {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
+    public Long getIdFromToken(String token) {
+        return valueOf(getAllClaimsFromToken(token).get("id").toString());
+    }
+
     //generate token for user
-    public String generateToken(String login) {
+    public String generateToken(String login, Long id) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("id", id);
         return doGenerateToken(claims, login);
     }
 

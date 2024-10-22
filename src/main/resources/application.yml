@@ -11,15 +11,12 @@ spring:
           auto: none
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-#    username: postgres
-#    password: 123
     username: admin
     password: admin
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/wordle
 
   liquibase:
-#    enabled: false
     enabled: true
     change-log: db/changelog/db.changelog-master.yaml
 

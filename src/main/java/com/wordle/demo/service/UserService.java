@@ -1,6 +1,7 @@
 package com.wordle.demo.service;
 
 import com.wordle.demo.repository.UserRepository;
+import com.wordle.demo.repository.entity.UserEntity;
 import com.wordle.demo.service.model.MyUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,10 +16,10 @@ public class UserService {
 
     public MyUser getUserByUsername(String login)
             throws UsernameNotFoundException {
-        Optional<MyUser> user = repository.findByLogin(login);
+        Optional<UserEntity> user = repository.findByLogin(login);
 
         if(user.isPresent())
-            return user.get();
+            return new MyUser(user.get());
         else throw new UsernameNotFoundException(login + " not found");
     }
 }

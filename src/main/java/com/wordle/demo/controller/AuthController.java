@@ -6,6 +6,8 @@ import com.wordle.demo.service.AuthService;
 import com.wordle.demo.repository.entity.UserEntity;
 import com.wordle.demo.service.UserService;
 import com.wordle.demo.service.model.MyUser;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,25 +34,29 @@ public class AuthController {
 
     @PostMapping("/new-user")
     @CrossOrigin
-    public String addUser(@RequestBody UserDto userDto) {
+    public String addUser(@RequestBody UserDto userDto, HttpServletResponse response) {
         try {
-            MyUser user = userService.getUserByUsername(userDto.login());
+            userService.getUserByUsername(userDto.login());
             return "not ok";
         } catch(UsernameNotFoundException e) {
             authService.addUser(new MyUser(userDto.login(), userDto.password()));
-            return jwtTokenUtil.generateToken(userDto.login());
+            MyUser user = userService.getUserByUsername(userDto.login());
+
+            response.setHeader("Access-Control-Allow-Credentials", "true");
+            return jwtTokenUtil.generateToken(userDto.login(), user.getId());
         }
 
     }
 
     @PostMapping("/loginPage")
     @CrossOrigin
-    public String login(@RequestBody UserDto userDto) {
+    public String login(@RequestBody UserDto userDto, HttpServletResponse response) {
         try {
             MyUser user = userService.getUserByUsername(userDto.login());
 
             if(passwordEncoder.matches(userDto.password(), user.getPassword())) {
-                return jwtTokenUtil.generateToken(userDto.login());
+                response.setHeader("Access-Control-Allow-Credentials", "true");
+                return jwtTokenUtil.generateToken(userDto.login(), user.getId());
             } else {
                 return "not ok";
             }
@@ -60,8 +66,9 @@ public class AuthController {
     }
 
     @PostMapping("/checkLogin")
-    @CrossOrigin
-    public String checkLogin(@RequestBody String token) {
-        return jwtTokenUtil.getUsernameFromToken(token);
+    @CrossOrigin(origins = "http://localhost:3000")
+    public String checkLogin(@CookieValue("jwt") String token, HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        return jwtTokenUtil.getUsernameFromToken(token) + " - " + jwtTokenUtil.getIdFromToken(token).toString();
     }
 }
