@@ -1,2 +1,8 @@
 # Wordle
-Wordle repository for Scrypt Programming Languages course
+Wordle repository for Script Programming Languages course.
+
+### Running
+```
+$ bash run.sh
+```
+In removing containers dialogue type "y" then press "Enter".
