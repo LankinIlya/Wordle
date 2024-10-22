@@ -32,6 +32,7 @@ public class Game {
     }
 
     public Game(GameEntity gameEntity, WordService wordService) {
+<<<<<<< HEAD
         System.out.println("Game constructor 1");
         this.id = gameEntity.getId();
         System.out.println("Game constructor 2");
@@ -50,6 +51,16 @@ public class Game {
             throw new RuntimeException(e);
         }
         System.out.println("Game constructor end");
+=======
+        this.id = gameEntity.getId();
+        this.userId = gameEntity.getUserId();
+        this.isActive = gameEntity.getActive();
+        try {
+            this.word = wordService.findWordById(gameEntity.getId());
+        } catch (WordNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+>>>>>>> 3ca1effc5be888ace247b05dfbf07bd25ab404d7
     }
 
     public Long getId() {

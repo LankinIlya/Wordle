@@ -26,7 +26,11 @@ public class GameController {
     @CrossOrigin
     @GetMapping("/new_game")
     public String newGame() {
+<<<<<<< HEAD
         Long userId = 0L;
+=======
+        Long userId = 1L;
+>>>>>>> 3ca1effc5be888ace247b05dfbf07bd25ab404d7
         gameService.newGame(userId);
         return "ok";
     }
@@ -49,6 +53,16 @@ public class GameController {
         } catch (GameNotFoundException e) {
             return new TryWordResponseDto(2);
         }
+<<<<<<< HEAD
+=======
+    }
+
+    @GetMapping("/get-game")
+    public GameDto getGameState() throws GameNotFoundException {
+        Long userId = 0L;
+        Game game = gameService.getGameByUser(userId);
+        return new GameDto(game, gameService, wordService);
+>>>>>>> 3ca1effc5be888ace247b05dfbf07bd25ab404d7
     }
 
     @CrossOrigin

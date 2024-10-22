@@ -67,7 +67,6 @@ public class GameDto {
     public void setWon(Boolean won) {
         isWon = won;
     }
-
     public Long getId() {
         return id;
     }
