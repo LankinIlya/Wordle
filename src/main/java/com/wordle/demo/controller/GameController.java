@@ -23,18 +23,20 @@ public class GameController {
         this.wordService = wordService;
     }
 
+    @CrossOrigin
     @GetMapping("/new_game")
     public String newGame() {
-        Long userId = 1L;
+        Long userId = 0L;
         gameService.newGame(userId);
         return "ok";
     }
 
+    @CrossOrigin
     @PostMapping("/try_word")
     public TryWordResponseDto tryWord(@RequestBody TryWordDto tryWordDto) {
         try {
             return new TryWordResponseDto(
-                gameService.tryWord(tryWordDto.gameId(), tryWordDto.word())
+                    gameService.tryWord(tryWordDto.gameId(), tryWordDto.word())
             );
         }
         catch (WordNotFoundException ex) {
@@ -49,10 +51,21 @@ public class GameController {
         }
     }
 
-    @GetMapping("/get-game")
+    @CrossOrigin
+    @GetMapping("/get_game")
     public GameDto getGameState() throws GameNotFoundException {
         Long userId = 0L;
         Game game = gameService.getGameByUser(userId);
         return new GameDto(game, gameService, wordService);
     }
+
+//    @CrossOrigin
+//    @GetMapping("/get_game")
+//    public Game getGameState() throws GameNotFoundException {
+//        Long userId = 0L;
+//        System.out.println("----------getGameState----------");
+//        Game game = gameService.getGameByUser(userId);
+//        System.out.println("----------getGameState-----game-----");
+//        return game;
+//    }
 }

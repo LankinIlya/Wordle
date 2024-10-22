@@ -5,6 +5,8 @@ const createInitialState = () => {
         grid: new Array(NUMBER_OF_WORDS),
         tries: 0,
         isFinished: false,
+        isWon: false,
+        isLoading: false,
         error: null,
         currentInputCell: {
             i: 0,
@@ -94,8 +96,7 @@ export function gameReducer(state = initialState, action: GameAction) {
             return {
                 ...state,
                 grid: grid,
-                currentInputCell: { i: i, j: j },
-
+                currentInputCell: { i: i, j: j }
             }
         case GameActionTypes.SEND_WORD:
             grid = state.grid;
@@ -103,11 +104,12 @@ export function gameReducer(state = initialState, action: GameAction) {
                 grid[state.tries][i] =
                     {
                         ...state.grid[state.tries][i],
-                        isSent: true
+                        isSent: true,
+                        isWaitingForInput: false
                     }
             }
             return { ...state, grid: grid };
-        case GameActionTypes.BACK_SPACE: // TO-DO
+        case GameActionTypes.BACK_SPACE:
             grid = state.grid;
             if(j >= NUMBER_OF_LETTERS) {
                 j = NUMBER_OF_LETTERS - 1;
@@ -141,6 +143,42 @@ export function gameReducer(state = initialState, action: GameAction) {
                 return {...state, grid: grid, currentInputCell: {i: i, j: j}};
             } else {
                 return state;
+            }
+        case GameActionTypes.LOAD_GAME:
+            const {id, words, results, isActive, isWon} = action.payload;
+            grid = state.grid;
+            const n = words.length;
+            for(let i = 0; i < n; i++) {
+                for(let j = 0; j < NUMBER_OF_LETTERS; j++) {
+                    grid[i][j].letter = words[i][j];
+                    grid[i][j].result = results[i][j];
+                    grid[i][j].isWaitingForInput = false;
+                }
+            }
+
+            for(let i = n; i < NUMBER_OF_WORDS; i++) {
+                for(let j = 0; j < NUMBER_OF_LETTERS; j++) {
+                    grid[i][j].letter = null;
+                    grid[i][j].result = -1;
+                    grid[i][j].isWaitingForInput = false;
+                }
+            }
+
+
+            grid[n][0].isWaitingForInput = true;
+
+            return {
+                ...state,
+                grid: grid,
+                tries: n,
+                isFinished: !isActive,
+                isWon: isWon,
+                isLoading: false,
+                error: false,
+                currentInputCell: {
+                    i: n,
+                    j: 0
+                }
             }
         default:
             return state;

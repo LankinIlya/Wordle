@@ -17,6 +17,8 @@ export interface GameState {
     grid: CellInfo[][],
     tries: number,
     isFinished: boolean | null,
+    isWon: boolean,
+    isLoading: boolean,
     error: string | null,
     currentInputCell: {
         i: number,
@@ -25,6 +27,7 @@ export interface GameState {
 }
 
 export interface GameDto {
+    id: number,
     words: String[],
     results: number[][],
     isActive: boolean,
@@ -38,7 +41,9 @@ export enum GameActionTypes {
     SET_LETTER = "SET_LETTER",
     SEND_WORD = "SEND_WORD",
     BACK_SPACE = "BACK_SPACE",
-    FOCUS_CELL = "FOCUS_CELL"
+    FOCUS_CELL = "FOCUS_CELL",
+    LOAD_GAME = "LOAD_GAME",
+    START_LOADING = "START_LOADING"
 }
 
 interface AddTryAction {
@@ -78,6 +83,16 @@ interface FocusCellAction {
     payload: { i: number, j: number }
 }
 
+interface LoadGameAction {
+    type: GameActionTypes.LOAD_GAME,
+    payload: GameDto
+}
+
+interface StartLoadingAction {
+    type: GameActionTypes.START_LOADING,
+    payload: null
+}
+
 export type GameAction = AddTryAction
                          | RestartGameAction
                          | FinishGameAction
@@ -85,6 +100,8 @@ export type GameAction = AddTryAction
                          | SendWordAction
                          | BackSpaceAction
                          | FocusCellAction
+                         | LoadGameAction
+                         | StartLoadingAction
 
 export const addTry = (word: CellInfo[]) : AddTryAction => ({
     type: GameActionTypes.ADD_TRY,
@@ -125,4 +142,14 @@ export const backSpace = () : BackSpaceAction => ({
 export const focusCell = (i: number, j: number) : FocusCellAction => ({
     type: GameActionTypes.FOCUS_CELL,
     payload: {i: i, j: j}
+})
+
+export const loadGame = (gameDto: GameDto) : LoadGameAction => ({
+    type: GameActionTypes.LOAD_GAME,
+    payload: gameDto
+})
+
+export const startLoading = () : StartLoadingAction => ({
+    type: GameActionTypes.START_LOADING,
+    payload: null
 })
