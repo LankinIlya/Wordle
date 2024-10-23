@@ -9,8 +9,6 @@ import {ConnectedProps, connect} from "react-redux";
 import {UserAction, setUser} from "./types/UserTypes";
 
 const mapStateToProps = (state: RootState) => {
-    console.log("mapStateToProps")
-    console.log(state)
     return {
         currentUser: state.user.user,
         game: state.game
@@ -64,7 +62,6 @@ class App extends React.Component<AppProps, AppState>{
         }
 
     renderContent() {
-        console.log("page = " + localStorage.getItem("page"))
         switch (+this.state.page) {
         case Page.Game:
             return <Game />;
