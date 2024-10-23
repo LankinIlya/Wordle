@@ -30,8 +30,8 @@ export interface GameDto {
     id: number,
     words: String[],
     results: number[][],
-    isActive: boolean,
-    isWon: boolean
+    active: boolean,
+    won: boolean
 }
 
 export enum GameActionTypes {
@@ -48,7 +48,9 @@ export enum GameActionTypes {
 
 interface AddTryAction {
     type: GameActionTypes.ADD_TRY,
-    payload: CellInfo[]
+    payload: {
+        result: number[]
+    }
 }
 
 interface RestartGameAction {
@@ -103,9 +105,11 @@ export type GameAction = AddTryAction
                          | LoadGameAction
                          | StartLoadingAction
 
-export const addTry = (word: CellInfo[]) : AddTryAction => ({
+export const addTry = (result: number[]) : AddTryAction => ({
     type: GameActionTypes.ADD_TRY,
-    payload: word
+    payload: {
+        result: result
+    }
 })
 
 export const restartGame = () : RestartGameAction => ({

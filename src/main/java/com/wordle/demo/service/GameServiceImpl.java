@@ -11,6 +11,7 @@ import com.wordle.demo.repository.entity.GameEntity;
 import com.wordle.demo.repository.entity.TryWordEntity;
 import com.wordle.demo.repository.entity.WordEntity;
 import com.wordle.demo.service.model.Game;
+import com.wordle.demo.service.model.MyUser;
 import com.wordle.demo.service.model.TryWord;
 import com.wordle.demo.service.model.Word;
 import org.springframework.data.domain.PageRequest;
@@ -44,12 +45,16 @@ public class GameServiceImpl implements GameService{
 
     public Game newGame(Long userId) {
         Word word = chooseRandomWord();
-        GameEntity gameEntity = gameRepository.save(new GameEntity(userId, true, false, word.id()));
+        GameEntity gameEntity = gameRepository.save(
+                new GameEntity(userId, true, false, word.id()));
         return new Game(gameEntity, wordService);
     }
 
     public List<Integer> tryWord(Long gameId, String guess)
-            throws WordNotFoundException, IncorrectGuessException, GameNotFoundException, GameAlreadyFinishedException {
+            throws WordNotFoundException,
+            IncorrectGuessException,
+            GameNotFoundException,
+            GameAlreadyFinishedException {
 
         Optional<GameEntity> gameEntity = gameRepository.findById(gameId);
         if(gameEntity.isEmpty())
@@ -67,6 +72,9 @@ public class GameServiceImpl implements GameService{
         Optional<WordEntity> wordEntity = wordRepository.findByText(guess);
         if(wordEntity.isEmpty())
             throw new IncorrectGuessException();
+
+        System.out.println("TryWord: " + guess +
+                "  gameWord = " + game.getWord().text());
 
         List<Integer> result = getResult(game.getWord().text(), guess);
 
@@ -94,6 +102,9 @@ public class GameServiceImpl implements GameService{
 
     @Override
     public Game getGameByUser(Long userId) {
+        if(userId == MyUser.ANONYMOUS_ID)
+            return newGame(userId);
+
         Optional<GameEntity> gameEntity = gameRepository.findByUserId(userId);
         if(gameEntity.isEmpty()) {
             return newGame(userId);
@@ -102,9 +113,20 @@ public class GameServiceImpl implements GameService{
         }
     }
 
+    @Override
+    public Game getGameById(Long gameId, Long userId) {
+        Optional<GameEntity> gameEntity = gameRepository.findById(gameId);
+        if( gameEntity.isEmpty()
+            || gameEntity.get().getUserId() != userId
+            || !gameEntity.get().getActive() ) {
+            return newGame(userId);
+        } else {
+            return new Game(gameEntity.get(), wordService);
+        }
+    }
+
     private Word chooseRandomWord() {
         long amount = wordRepository.count();
-        System.out.println("Amount of words in repository: " + amount);
         int index = new Random().nextInt((int)amount);
         Pageable pageable = PageRequest.of(index, 1);
         List<WordEntity> result = wordRepository.findAll(pageable)
@@ -112,6 +134,10 @@ public class GameServiceImpl implements GameService{
 
         try {
             WordEntity wordEntity = result.get(0);
+            System.out.println("chooseRandomWord id = "
+                    + wordEntity.getId()
+                    + "  text = "
+                    + wordEntity.getText() );
             return new Word(wordEntity.getId(), wordEntity.getText());
         }
         catch (Exception ex) {
@@ -138,7 +164,7 @@ public class GameServiceImpl implements GameService{
     }
 
     @Override
-    public List<TryWord> getTryWords(Long gameId) throws GameNotFoundException {
+    public List<TryWord> getTryWords(Long gameId) {
         List<TryWordEntity> entities = tryWordRepository.findByGameId(gameId);
         List<TryWord> result = new ArrayList<>(entities.size());
         for(TryWordEntity entity : entities) {

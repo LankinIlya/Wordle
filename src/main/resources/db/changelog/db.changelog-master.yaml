@@ -6,6 +6,8 @@ databaseChangeLog:
   - include:
       file: db/changelog/changeset/insert-words-1.sql
   - include:
+      file: db/changelog/changeset/insert-users-anonymous.sql
+  - include:
       file: db/changelog/changeset/create-games-table.sql
   - include:
       file: db/changelog/changeset/create-trywords-table.sql

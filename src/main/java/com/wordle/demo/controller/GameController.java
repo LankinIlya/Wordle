@@ -7,9 +7,13 @@ import com.wordle.demo.exception.GameAlreadyFinishedException;
 import com.wordle.demo.exception.GameNotFoundException;
 import com.wordle.demo.exception.IncorrectGuessException;
 import com.wordle.demo.exception.WordNotFoundException;
+import com.wordle.demo.jwt.JwtTokenUtil;
 import com.wordle.demo.service.GameService;
 import com.wordle.demo.service.WordService;
 import com.wordle.demo.service.model.Game;
+import com.wordle.demo.service.model.MyUser;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,13 +21,18 @@ import org.springframework.web.bind.annotation.*;
 public class GameController {
     private final GameService gameService;
     private final WordService wordService;
+    private final JwtTokenUtil jwtTokenUtil;
+    private static final String origin = "http://localhost:3000";
 
-    public GameController(GameService gameService, WordService wordService) {
+    public GameController(GameService gameService,
+                          WordService wordService,
+                          JwtTokenUtil jwtTokenUtil) {
         this.gameService = gameService;
         this.wordService = wordService;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    @CrossOrigin
+    @CrossOrigin(origins = origin)
     @GetMapping("/new_game")
     public String newGame() {
         Long userId = 0L;
@@ -31,41 +40,50 @@ public class GameController {
         return "ok";
     }
 
-    @CrossOrigin
+
+
+    @CrossOrigin(origins = origin)
     @PostMapping("/try_word")
-    public TryWordResponseDto tryWord(@RequestBody TryWordDto tryWordDto) {
+    public TryWordResponseDto tryWord(
+            @CookieValue(value = "jwt", defaultValue = "") String token,
+            @RequestBody TryWordDto tryWordDto,
+            HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         try {
             return new TryWordResponseDto(
-                    gameService.tryWord(tryWordDto.gameId(), tryWordDto.word())
+                gameService.tryWord(tryWordDto.gameId(), tryWordDto.word())
             );
         }
-        catch (WordNotFoundException ex) {
+        catch (WordNotFoundException | IncorrectGuessException ex) {
             return new TryWordResponseDto(1);
         }
-        catch (IncorrectGuessException ex) {
-            return new TryWordResponseDto(1);
-        } catch (GameAlreadyFinishedException e) {
-            return new TryWordResponseDto(2);
-        } catch (GameNotFoundException e) {
+        catch (GameAlreadyFinishedException | GameNotFoundException e) {
             return new TryWordResponseDto(2);
         }
     }
 
-    @CrossOrigin
+    @CrossOrigin(origins = origin)
     @GetMapping("/get_game")
-    public GameDto getGameState() throws GameNotFoundException {
-        Long userId = 0L;
-        Game game = gameService.getGameByUser(userId);
-        return new GameDto(game, gameService, wordService);
+    public GameDto getGameState(
+            @CookieValue(value = "jwt", defaultValue = "") String token,
+            @CookieValue(value = "game_id", defaultValue = "") String gameIdStr,
+            HttpServletResponse response)
+            throws GameNotFoundException {
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        Long userId = getUserId(token);
+        if(gameIdStr == null || gameIdStr.isEmpty()) {
+            Game game = gameService.getGameByUser(userId);
+            return new GameDto(game, gameService, wordService);
+        } else {
+            Long gameId = Long.parseLong(gameIdStr);
+            Game game = gameService.getGameById(gameId, userId);
+            return new GameDto(game, gameService, wordService);
+        }
     }
 
-//    @CrossOrigin
-//    @GetMapping("/get_game")
-//    public Game getGameState() throws GameNotFoundException {
-//        Long userId = 0L;
-//        System.out.println("----------getGameState----------");
-//        Game game = gameService.getGameByUser(userId);
-//        System.out.println("----------getGameState-----game-----");
-//        return game;
-//    }
+    Long getUserId(String token) {
+        return (token.isEmpty()
+                ? MyUser.ANONYMOUS_ID
+                : jwtTokenUtil.getIdFromToken(token));
+    }
 }

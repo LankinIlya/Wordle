@@ -5,7 +5,8 @@ import com.wordle.demo.repository.entity.TryWordEntity;
 import com.wordle.demo.service.WordService;
 
 public record TryWord(Long id, Long gameId, Word word, Long tryNumber) {
-    public TryWord(TryWordEntity entity, WordService wordService) throws WordNotFoundException {
+    public TryWord(TryWordEntity entity, WordService wordService)
+            throws WordNotFoundException {
         this(
                 entity.getId(),
                 entity.getGameId(),

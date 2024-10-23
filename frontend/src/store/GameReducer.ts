@@ -1,4 +1,5 @@
 import {CellInfo, GameAction, GameActionTypes, GameState, NUMBER_OF_LETTERS, NUMBER_OF_WORDS} from "../types/GameTypes";
+import {saveCookie} from "../utils/saveCookie"
 
 const createInitialState = () => {
     let res: GameState = {
@@ -40,19 +41,25 @@ export function gameReducer(state = initialState, action: GameAction) {
     let res: GameState;
     let grid: CellInfo[][];
     let {i, j} = state.currentInputCell;
-    console.log(action.type);
-    console.log(action.payload);
     switch (action.type) {
         case GameActionTypes.ADD_TRY:
             if( state.isFinished
-                || state.error !== null
-                || action.payload === null )
-                return {...state, error: "error"};
-            res = state;
+                || state.error !== null )
+                return state;
+            if(action.payload.result === null) {
+                grid = state.grid;
+                for(let i = 0; i < NUMBER_OF_LETTERS; i++) {
+                    grid[state.tries][i].isSent = false;
+                }
+                grid[state.tries][NUMBER_OF_LETTERS - 1].isWaitingForInput = true;
+                return {...state, grid: grid};
+            }
+
+            grid = state.grid;
             let flag = false;
             for(let i = 0; i < NUMBER_OF_LETTERS; i++) {
-                const rs = action.payload[i].result
-                res.grid[state.tries][i] =
+                const rs = action.payload.result[i]
+                grid[state.tries][i] =
                     {
                         ...state.grid[state.tries][i],
                         result: rs
@@ -62,17 +69,30 @@ export function gameReducer(state = initialState, action: GameAction) {
                 }
             }
 
-            res.grid[res.currentInputCell.i][res.currentInputCell.j].isWaitingForInput = false;
-            res.currentInputCell = { i: res.tries, j: 0 }
-            if(res.currentInputCell.i < NUMBER_OF_WORDS)
-                res.grid[res.currentInputCell.i][res.currentInputCell.j].isWaitingForInput = true;
+            grid[i][j].isWaitingForInput = false;
+            i = state.tries + 1;
+            j = 0;
 
-            res.tries++;
-            if(!flag || res.tries === NUMBER_OF_WORDS) {
-                res.isFinished = true;
+            let isFinished = false;
+            if(!flag || state.tries + 1 === NUMBER_OF_WORDS) {
+                isFinished = true;
+                i = NUMBER_OF_WORDS;
+            } else {
+                if(i < NUMBER_OF_WORDS)
+                    grid[i][j].isWaitingForInput = true;
             }
 
-            return res;
+            return {
+                ...state,
+                isFinished: isFinished,
+                isWon: !flag,
+                grid: grid,
+                tries: state.tries + 1,
+                currentInputCell: {
+                    i: i,
+                    j: j
+                }
+            };
 
         case GameActionTypes.FINISH_GAME:
             return {...state, isFinished: true};
@@ -83,7 +103,7 @@ export function gameReducer(state = initialState, action: GameAction) {
                 return state;
             }
             if(state.grid[i][j].isSent) {
-                return {...state, error: "error"};
+                return state;
             }
 
             grid = state.grid
@@ -135,6 +155,8 @@ export function gameReducer(state = initialState, action: GameAction) {
 
             return {...state, grid: grid, currentInputCell: {i: i, j: j}};
         case GameActionTypes.FOCUS_CELL:
+            if(state.isFinished)
+                return state;
             grid = state.grid;
             if(action.payload.i == i && action.payload.j >= 0 && action.payload.j < NUMBER_OF_LETTERS) {
                 grid[i][j].isWaitingForInput = false;
@@ -145,9 +167,10 @@ export function gameReducer(state = initialState, action: GameAction) {
                 return state;
             }
         case GameActionTypes.LOAD_GAME:
-            const {id, words, results, isActive, isWon} = action.payload;
+            const {id, words, results, active, won} = action.payload;
+
             grid = state.grid;
-            const n = words.length;
+            const n = words?.length;
             for(let i = 0; i < n; i++) {
                 for(let j = 0; j < NUMBER_OF_LETTERS; j++) {
                     grid[i][j].letter = words[i][j];
@@ -164,22 +187,26 @@ export function gameReducer(state = initialState, action: GameAction) {
                 }
             }
 
+            if(active)
+                grid[n][0].isWaitingForInput = true;
 
-            grid[n][0].isWaitingForInput = true;
+            saveCookie("game_id", id);
 
             return {
                 ...state,
                 grid: grid,
                 tries: n,
-                isFinished: !isActive,
-                isWon: isWon,
+                isFinished: !active,
+                isWon: won,
                 isLoading: false,
-                error: false,
+                error: null,
                 currentInputCell: {
                     i: n,
                     j: 0
                 }
             }
+        case GameActionTypes.START_LOADING:
+            return {...state, isLoading: true};
         default:
             return state;
     }

@@ -53,7 +53,6 @@ class App extends React.Component<AppProps, AppState>{
                           onClickPlay={this.onClickPlay}
                           onClickRegistration={this.onClickRegistration}
                     />
-                    <h1>{this.props.currentUser}</h1>
                     <div className={"container"}>
                         <div className={"content"}>
                             {this.renderContent()}

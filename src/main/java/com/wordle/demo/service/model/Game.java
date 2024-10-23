@@ -23,7 +23,11 @@ public class Game {
     public Game() {
     }
 
-    public Game(Long id, Long userId, Boolean isActive, Boolean isWon, Word word) {
+    public Game(Long id,
+                Long userId,
+                Boolean isActive,
+                Boolean isWon,
+                Word word) {
         this.id = id;
         this.userId = userId;
         this.isActive = isActive;
@@ -32,24 +36,15 @@ public class Game {
     }
 
     public Game(GameEntity gameEntity, WordService wordService) {
-        System.out.println("Game constructor 1");
         this.id = gameEntity.getId();
-        System.out.println("Game constructor 2");
         this.userId = gameEntity.getUserId();
-        System.out.println("Game constructor 3");
         this.isActive = gameEntity.getActive();
-        System.out.println("Game constructor 4");
         this.isWon = gameEntity.getWon();
-        System.out.println("Game constructor 4");
         try {
-            System.out.println("Game constructor 5");
-            this.word = wordService.findWordById(gameEntity.getId());
-            System.out.println("Game constructor 6");
+            this.word = wordService.findWordById(gameEntity.getWordId());
         } catch (WordNotFoundException e) {
-            System.out.println("Game from gameEntity: Word not found");
             throw new RuntimeException(e);
         }
-        System.out.println("Game constructor end");
     }
 
     public Long getId() {

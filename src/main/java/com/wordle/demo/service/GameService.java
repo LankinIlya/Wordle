@@ -21,7 +21,9 @@ public interface GameService {
 
     Game getGameByUser(Long userId);
 
+    Game getGameById(Long gameId, Long userId);
+
     List<Integer> getResult(String word, String guess);
 
-    List<TryWord> getTryWords(Long gameId) throws GameNotFoundException;
+    List<TryWord> getTryWords(Long gameId);
 }

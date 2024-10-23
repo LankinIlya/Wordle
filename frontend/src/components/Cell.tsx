@@ -25,7 +25,7 @@ export class Cell extends React.Component<CellProps, CellState> {
                      data-inputtingrow={this.props.inputtingRow}
                      onClick={(e) => this.props.onClick()}>
                     <div className={"cell-letter"}>
-                        {this.props.letter}
+                        {this.props.letter?.toUpperCase()}
                     </div>
                 </div>
             </div>

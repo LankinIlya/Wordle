@@ -5,4 +5,4 @@
 TRUNCATE users;
 
 INSERT INTO users(id, login, password) VALUES
-(0, 'anonymous', 'abacaba');
+(1, 'anonymous', 'abacaba');
