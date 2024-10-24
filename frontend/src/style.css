@@ -24,17 +24,19 @@ header a {
 header a:hover {
   transition: 200ms;
   color: #0000FF;
+  cursor: pointer;
 }
 
 .container {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
 }
 
 .sidebar {
   background-color: #333344;
-  width: 19%;
-  height: 250px;
+  width: 27%;
+  height: 400px;
   margin-top: 15px;
   margin-right: 7px;
   border-radius: 5px;
@@ -42,7 +44,7 @@ header a:hover {
 }
 
 .content {
-  width: 79%;
+  width: 70%;
   height: 500px;
   border-radius: 5px;
   padding: 5px;
@@ -100,7 +102,7 @@ header a:hover {
   background-color: #1bc304;
 }
 
-.cell:hover[data-result="-1"][data-inputtingRow="true"] {
+.cell:hover[data-result="-1"][data-inputtingrow="true"] {
   transform: scale(1.06);
   transition: 200ms;
   background-color: #E0E0F0;

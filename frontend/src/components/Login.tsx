@@ -47,12 +47,12 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
     checkLogin() {
         fetch("http://localhost:8080/checkLogin", {
-                    method: "POST",
-                    credentials: 'include',
-                    headers: {
-                        'Cookie': document.cookie
-                    }
-                })
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    'Cookie': document.cookie
+                }
+        })
                 .then((response: Response) => response.text())
                 .then((result: string) => {
                                     alert(result);

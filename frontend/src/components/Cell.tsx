@@ -22,10 +22,10 @@ export class Cell extends React.Component<CellProps, CellState> {
                 <div className={"cell"}
                      data-result={this.props.result}
                      data-inputting={this.props.isWaitingForInput}
-                     data-inputtingRow={this.props.inputtingRow}
+                     data-inputtingrow={this.props.inputtingRow}
                      onClick={(e) => this.props.onClick()}>
                     <div className={"cell-letter"}>
-                        {this.props.letter}
+                        {this.props.letter?.toUpperCase()}
                     </div>
                 </div>
             </div>

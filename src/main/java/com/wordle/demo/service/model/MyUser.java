@@ -5,6 +5,7 @@ import com.wordle.demo.repository.entity.UserEntity;
 import java.util.Objects;
 
 public final class MyUser {
+    public static final Long ANONYMOUS_ID = 1L;
     private Long id;
     private String login;
     private String password;

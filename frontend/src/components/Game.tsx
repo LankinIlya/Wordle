@@ -6,21 +6,26 @@ import {
     addTry,
     backSpace, CellInfo,
     finishGame, focusCell,
-    GameAction,
-    GameState, NUMBER_OF_LETTERS,
+    GameAction, GameDto,
+    GameState, loadGame, NUMBER_OF_LETTERS,
     restartGame,
     sendWord,
-    setLetter
+    setLetter, startLoading
 } from "../types/GameTypes";
 import {isLetter} from "../utils/letters";
 import {div} from "../utils/math";
+import axios from "axios-typescript";
+import {TryWordDto, TryWordResponseDto} from "../types/TryWord";
+import {getFromCookies} from "../utils/getFromCookies";
+import {baseUrl} from "../index";
 
 const mapStateToProps = (state: RootState) => {
     return {
-        game: state.game,
         grid: state.game.grid,
         tries: state.game.tries,
         isFinished: state.game.isFinished,
+        isWon: state.game.isWon,
+        isLoading: state.game.isLoading,
         error: state.game.error,
         currentInputCell: state.game.currentInputCell
     }
@@ -32,8 +37,11 @@ const mapDispatch = (dispatch : Dispatch<GameAction>) => ({
     sendWord: () => dispatch(sendWord()),
     finishGame: () => dispatch(finishGame()),
     restartGame: () => dispatch(restartGame()),
-    addTry: (word: CellInfo[]) => dispatch(addTry(word)),
+    addTry: (result: number[]) => dispatch(addTry(result)),
     focusCell: (i: number, j: number) => dispatch(focusCell(i, j)),
+    loadGame: (gameDto: GameDto) => dispatch(loadGame(gameDto)),
+    startLoading: () => dispatch(startLoading()),
+
 });
 
 const connector = connect(mapStateToProps, mapDispatch)
@@ -56,16 +64,37 @@ class Game extends React.Component<GameProps, ComponentGameState> {
         this.state = {
             divRef: React.createRef()
         }
+
+        this.props.startLoading();
+
+        axios.request<GameDto>({
+            url: baseUrl + 'game/get_game',
+            method: "GET",
+            withCredentials: true
+        }).then((response) => {
+            const res = JSON.parse(response.data.toString());
+            this.props.loadGame(res);
+        });
     }
     componentDidMount() {
-        this.state.divRef.current.focus()
+        if(!this.props.isLoading)
+            this.state.divRef.current.focus()
     }
 
     componentDidUpdate() {
-        this.state.divRef.current.focus()
+        if(!this.props.isLoading)
+            this.state.divRef.current.focus()
     }
 
     render() {
+        if(this.props.isLoading) {
+            return (
+                <div className={"wordle-grid"}>
+                    <h2>Loading...</h2>
+                </div>
+            )
+        }
+
         return (
             <div ref={this.state.divRef}
                  className={"wordle-grid"}
@@ -84,7 +113,7 @@ class Game extends React.Component<GameProps, ComponentGameState> {
                                       isWaitingForInput={el.isWaitingForInput}
                                       inputtingRow={
                                           div(el.id, NUMBER_OF_LETTERS)
-                                          == this.props.tries }
+                                          == this.props.currentInputCell.i }
                                       onClick={() =>
                                           this.props.focusCell(
                                               div(el.id, NUMBER_OF_LETTERS)
@@ -99,11 +128,49 @@ class Game extends React.Component<GameProps, ComponentGameState> {
 
     handleKeyEvent(event: KeyboardEvent<HTMLDivElement>) {
         const code = event.code;
+
+        if(this.props.isFinished)
+            return;
+
         switch (code) {
             case 'Backspace':
                 this.props.backSpace();
                 break;
             case 'Enter':
+                const gameid = getFromCookies("game_id");
+                let word = "";
+                let flag = false;
+                const move = this.props.tries;
+                for(let i = 0; i < NUMBER_OF_LETTERS; i++) {
+                    if(isLetter(this.props.grid[move][i].letter)) {
+                        word += this.props.grid[move][i].letter;
+                    } else {
+                        flag = true;
+                        break;
+                    }
+                }
+
+                if(gameid && !flag) {
+                    this.props.sendWord();
+                    const data: TryWordDto = {
+                        gameId: +gameid,
+                        move: move,
+                        word: word.toLowerCase()
+                    }
+
+                    axios.request<TryWordResponseDto>({
+                        url: baseUrl + "game/try_word",
+                        method: "POST",
+                        withCredentials: true,
+                        headers: {
+                            "Content-type": "application/json"
+                        },
+                        data: JSON.stringify(data),
+                    }).then((response) => {
+                        const res = JSON.parse(response.data.toString());
+                        this.props.addTry(res.result);
+                    });
+                }
 
                 break;
             case 'ArrowLeft':
@@ -125,7 +192,6 @@ class Game extends React.Component<GameProps, ComponentGameState> {
         }
 
     }
-
 }
 
 export default connector(Game)
