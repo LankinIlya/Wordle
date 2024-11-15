@@ -18,6 +18,7 @@ import axios from "axios-typescript";
 import {TryWordDto, TryWordResponseDto} from "../types/TryWord";
 import {getFromCookies} from "../utils/getFromCookies";
 import {baseUrl} from "../index";
+import {GameAnswer} from "./GameAnswer";
 
 const mapStateToProps = (state: RootState) => {
     return {
@@ -27,7 +28,8 @@ const mapStateToProps = (state: RootState) => {
         isWon: state.game.isWon,
         isLoading: state.game.isLoading,
         error: state.game.error,
-        currentInputCell: state.game.currentInputCell
+        currentInputCell: state.game.currentInputCell,
+        answer: state.game.answer
     }
 }
 
@@ -37,7 +39,7 @@ const mapDispatch = (dispatch : Dispatch<GameAction>) => ({
     sendWord: () => dispatch(sendWord()),
     finishGame: () => dispatch(finishGame()),
     restartGame: () => dispatch(restartGame()),
-    addTry: (result: number[]) => dispatch(addTry(result)),
+    addTry: (result: TryWordResponseDto) => dispatch(addTry(result)),
     focusCell: (i: number, j: number) => dispatch(focusCell(i, j)),
     loadGame: (gameDto: GameDto) => dispatch(loadGame(gameDto)),
     startLoading: () => dispatch(startLoading()),
@@ -122,6 +124,9 @@ class Game extends React.Component<GameProps, ComponentGameState> {
                                 />)
                         }
                     </div>))}
+                <GameAnswer isFinished={this.props.isFinished}
+                            isWon={this.props.isWon}
+                            answer={this.props.answer}/>
             </div>
         );
     }
@@ -168,7 +173,8 @@ class Game extends React.Component<GameProps, ComponentGameState> {
                         data: JSON.stringify(data),
                     }).then((response) => {
                         const res = JSON.parse(response.data.toString());
-                        this.props.addTry(res.result);
+                        console.log(res);
+                        this.props.addTry(res);
                     });
                 }
 

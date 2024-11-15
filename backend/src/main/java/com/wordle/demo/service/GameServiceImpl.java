@@ -10,10 +10,7 @@ import com.wordle.demo.repository.WordRepository;
 import com.wordle.demo.repository.entity.GameEntity;
 import com.wordle.demo.repository.entity.TryWordEntity;
 import com.wordle.demo.repository.entity.WordEntity;
-import com.wordle.demo.service.model.Game;
-import com.wordle.demo.service.model.MyUser;
-import com.wordle.demo.service.model.TryWord;
-import com.wordle.demo.service.model.Word;
+import com.wordle.demo.service.model.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,7 +47,7 @@ public class GameServiceImpl implements GameService{
         return new Game(gameEntity, wordService);
     }
 
-    public List<Integer> tryWord(Long gameId, String guess)
+    public TryWordResult tryWord(Long gameId, String guess)
             throws WordNotFoundException,
             IncorrectGuessException,
             GameNotFoundException,
@@ -95,9 +92,10 @@ public class GameServiceImpl implements GameService{
         numberOfTries++;
         if(numberOfTries == NUMBER_OF_WORDS || win) {
             gameRepository.finishGame(game.getId(), win);
+            return new TryWordResult(result, false, win, game.getWord().text());
         }
 
-        return result;
+        return new TryWordResult(result);
     }
 
     @Override

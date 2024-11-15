@@ -102,6 +102,10 @@ header a:hover {
   background-color: #1bc304;
 }
 
+.cell[data-result="3"] {
+  background-color: #0e7a01;
+}
+
 .cell:hover[data-result="-1"][data-inputtingrow="true"] {
   transform: scale(1.06);
   transition: 200ms;

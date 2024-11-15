@@ -1,4 +1,5 @@
 import exp from "node:constants";
+import {TryWordResponseDto} from "./TryWord";
 
 export const NUMBER_OF_LETTERS = 5;
 export const NUMBER_OF_WORDS = 6;
@@ -23,7 +24,8 @@ export interface GameState {
     currentInputCell: {
         i: number,
         j: number
-    }
+    },
+    answer: string | null
 }
 
 export interface GameDto {
@@ -31,7 +33,8 @@ export interface GameDto {
     words: String[],
     results: number[][],
     active: boolean,
-    won: boolean
+    won: boolean,
+    answer: string | null
 }
 
 export enum GameActionTypes {
@@ -49,7 +52,8 @@ export enum GameActionTypes {
 interface AddTryAction {
     type: GameActionTypes.ADD_TRY,
     payload: {
-        result: number[]
+        result: number[],
+        answer: string | null
     }
 }
 
@@ -105,10 +109,11 @@ export type GameAction = AddTryAction
                          | LoadGameAction
                          | StartLoadingAction
 
-export const addTry = (result: number[]) : AddTryAction => ({
+export const addTry = (result: TryWordResponseDto) : AddTryAction => ({
     type: GameActionTypes.ADD_TRY,
     payload: {
-        result: result
+        result: result.result,
+        answer: result.answer
     }
 })
 
