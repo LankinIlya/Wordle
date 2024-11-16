@@ -66,19 +66,23 @@ public class GameController {
     @GetMapping("/get_game")
     public GameDto getGameState(
             @CookieValue(value = "jwt", defaultValue = "") String token,
-//            @CookieValue(value = "game_id", defaultValue = "") String gameIdStr,
+            @CookieValue(value = "game_id", defaultValue = "") String gameIdStr,
             HttpServletResponse response)
             throws GameNotFoundException {
         response.setHeader("Access-Control-Allow-Credentials", "true");
         Long userId = getUserId(token);
-//        if(gameIdStr == null || gameIdStr.isEmpty()) {
+//        System.out.println("GameController.getGameState: " +
+//                "userId=" + userId + ", gameIdStr=" + gameIdStr);
+        if(gameIdStr == null || gameIdStr.isEmpty()) {
+//            System.out.println("gameIdStr is empty");
             Game game = gameService.getGameByUser(userId);
             return new GameDto(game, gameService, wordService);
-//        } else {
-//            Long gameId = Long.parseLong(gameIdStr);
-//            Game game = gameService.getGameById(gameId, userId);
-//            return new GameDto(game, gameService, wordService);
-//        }
+        } else {
+//            System.out.println("gameIdStr=" + gameIdStr);
+            Long gameId = Long.parseLong(gameIdStr);
+            Game game = gameService.getGameById(gameId, userId);
+            return new GameDto(game, gameService, wordService);
+        }
     }
 
     Long getUserId(String token) {
