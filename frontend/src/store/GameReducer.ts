@@ -12,7 +12,8 @@ const createInitialState = () => {
         currentInputCell: {
             i: 0,
             j: 0
-        }
+        },
+        answer: null
     };
 
 
@@ -91,7 +92,8 @@ export function gameReducer(state = initialState, action: GameAction) {
                 currentInputCell: {
                     i: i,
                     j: j
-                }
+                },
+                answer: action.payload.answer
             };
 
         case GameActionTypes.FINISH_GAME:
@@ -167,7 +169,13 @@ export function gameReducer(state = initialState, action: GameAction) {
                 return state;
             }
         case GameActionTypes.LOAD_GAME:
-            const {id, words, results, active, won} = action.payload;
+            const {
+                id,
+                words,
+                results,
+                active,
+                won,
+                answer} = action.payload;
 
             grid = state.grid;
             const n = words?.length;
@@ -203,7 +211,8 @@ export function gameReducer(state = initialState, action: GameAction) {
                 currentInputCell: {
                     i: n,
                     j: 0
-                }
+                },
+                answer: answer
             }
         case GameActionTypes.START_LOADING:
             return {...state, isLoading: true};

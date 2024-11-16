@@ -6,5 +6,8 @@ export interface TryWordDto {
 
 export interface TryWordResponseDto {
     status: number,
-    result: number[]
+    result: number[],
+    active: boolean,
+    won: boolean,
+    answer: string | null
 }

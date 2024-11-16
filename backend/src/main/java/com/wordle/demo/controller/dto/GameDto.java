@@ -15,6 +15,7 @@ public class GameDto {
     private List<List<Integer>> results;
     private Boolean isActive;
     private Boolean isWon;
+    private String answer;
 
     public GameDto(Game game, GameService gameService, WordService wordService)
             throws GameNotFoundException {
@@ -23,6 +24,11 @@ public class GameDto {
         this.results = new ArrayList<>();
         this.isActive = game.getActive();
         this.isWon = game.getWon();
+
+        if(this.isActive)
+            this.answer = game.getWord().text();
+        else
+            this.answer = null;
 
         List<TryWord> tryWords = gameService.getTryWords(game.getId());
         for(TryWord tryWord : tryWords) {

@@ -6,6 +6,7 @@ import com.wordle.demo.exception.IncorrectGuessException;
 import com.wordle.demo.exception.WordNotFoundException;
 import com.wordle.demo.service.model.Game;
 import com.wordle.demo.service.model.TryWord;
+import com.wordle.demo.service.model.TryWordResult;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public interface GameService {
     Game newGame(Long userId);
 
-    List<Integer> tryWord(Long gameId, String guess)
+    TryWordResult tryWord(Long gameId, String guess)
             throws WordNotFoundException,
                    IncorrectGuessException,
                    GameNotFoundException,
