@@ -15,8 +15,8 @@ services:
   wordle-backend:
     container_name: wordle-backend
     build:
-      context: ../
-      dockerfile: /docker/backend/Dockerfile
+      context: ../backend/
+      dockerfile: ../docker/backend/Dockerfile
     environment:
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}

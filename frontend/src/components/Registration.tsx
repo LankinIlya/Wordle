@@ -1,4 +1,5 @@
 import React from "react";
+import {getLoginFromCookies} from "../utils/getLogin";
 
 type RegistrationProps = {
 
@@ -8,9 +9,10 @@ type RegistrationState = {
 
 };
 
-export class Registration extends React.Component<RegistrationProps, RegistrationState> {
+export class Registration extends React.Component<RegistrationProps,
+                                                RegistrationState> {
     constructor(props: RegistrationProps) {
-        super(props)
+        super(props);
 
         this.changePassword = this.changePassword.bind(this);
         this.changeLogin = this.changeLogin.bind(this);
@@ -19,19 +21,27 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         this.buttonClick = this.buttonClick.bind(this);
     }
     checkDataValidity() {
-        const incorrectLogin = document.getElementById("incorrectLogin") as HTMLElement;
-        const incorrectPassword = document.getElementById("incorrectPassword") as HTMLElement;
-        const incorrectConfirm = document.getElementById("incorrectConfirm") as HTMLElement;
-        const loginInput = document.getElementById("username") as HTMLInputElement;
-        const passwordInput = document.getElementById("password") as HTMLInputElement;
-        const confirmPassword = document.getElementById("confirmPassword") as HTMLInputElement;
+        const incorrectLogin = document
+        .getElementById("incorrectLogin") as HTMLElement;
+        const incorrectPassword = document
+        .getElementById("incorrectPassword") as HTMLElement;
+        const incorrectConfirm = document
+        .getElementById("incorrectConfirm") as HTMLElement;
+        const loginInput = document
+        .getElementById("username") as HTMLInputElement;
+        const passwordInput = document
+        .getElementById("password") as HTMLInputElement;
+        const confirmPassword = document
+        .getElementById("confirmPassword") as HTMLInputElement;
 
         return (loginInput.value !== "" && passwordInput.value !== ""
         && confirmPassword.value !== "" && incorrectLogin.hidden
-        && incorrectPassword.hasAttribute("hidden") && incorrectConfirm.hasAttribute("hidden"));
+        && incorrectPassword.hasAttribute("hidden")
+        && incorrectConfirm.hasAttribute("hidden"));
     }
     changeLogin() {
-        const incorrectLogin = document.getElementById("incorrectLogin") as HTMLElement;
+        const incorrectLogin = document
+        .getElementById("incorrectLogin") as HTMLElement;
         const loginInput = document.getElementById("username");
         const len = (loginInput as HTMLInputElement).value.length;
 
@@ -69,7 +79,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         this.checkPasswordConfirmation();
     }
     buttonClick() {
-        const loginValue = (document.getElementById("username") as HTMLInputElement).value;
+        const loginValue = (document
+        .getElementById("username") as HTMLInputElement).value;
         if(!this.checkDataValidity()) {
             alert("Data is invalid");
             return;
@@ -81,19 +92,21 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               },
               body: JSON.stringify({
                 login: loginValue,
-                password: (document.getElementById("password") as HTMLInputElement).value
+                password: (document
+                .getElementById("password") as HTMLInputElement).value
               })
             })
               .then(response => response.text())
               .then(result => {
-                if(result === "ok") {
-                    document.cookie = loginValue;
+                if(result !== "not ok") {
+                    document.cookie = "login=" + loginValue;
+                    document.cookie = "jwt=" + result;
                     alert("Successful registration\nCurrent login: "
-                    + document.cookie);
+                    + getLoginFromCookies());
                 }
                 else {
                     alert("This user already exists\nCurrent login: "
-                    + document.cookie);
+                    + getLoginFromCookies());
                 }
               })
     }
