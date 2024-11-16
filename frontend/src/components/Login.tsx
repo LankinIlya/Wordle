@@ -2,7 +2,7 @@ import React from "react";
 import {getLoginFromCookies} from "../utils/getLogin";
 
 type LoginProps = {
-
+    onLoginChange: () => void
 };
 
 type LoginState = {
@@ -35,6 +35,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                 if(result !== "not ok") {
                     document.cookie = "login=" + loginValue;
                     document.cookie = "jwt=" + result;
+                    this.props.onLoginChange();
                     alert("Successful login\nCurrent login: "
                     + getLoginFromCookies());
                 }
@@ -43,20 +44,6 @@ export class Login extends React.Component<LoginProps, LoginState> {
                     + getLoginFromCookies());
                 }
               })
-    }
-
-    checkLogin() {
-        fetch("http://localhost:8080/checkLogin", {
-                method: "POST",
-                credentials: 'include',
-                headers: {
-                    'Cookie': document.cookie
-                }
-        })
-                .then((response: Response) => response.text())
-                .then((result: string) => {
-                                    alert(result);
-                })
     }
 
     render() {
@@ -69,8 +56,6 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
                     <button type="button" onClick={this.buttonClick}
                     id="regButton">Войти</button>
-
-                    <button onClick={this.checkLogin}>check login</button>
                 </div>
         );
     }

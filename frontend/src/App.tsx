@@ -7,6 +7,8 @@ import {SideBar} from "./components/SideBar";
 import {RootState, store} from "./store/store";
 import {ConnectedProps, connect} from "react-redux";
 import {UserAction, setUser} from "./types/UserTypes";
+import {deleteLoginCookies} from "./utils/deleteLoginCookies";
+import {getLoginFromCookies} from "./utils/getLogin";
 
 const mapStateToProps = (state: RootState) => {
     return {
@@ -42,7 +44,8 @@ class App extends React.Component<AppProps, AppState>{
         this.onClickPlay = this.onClickPlay.bind(this);
         this.onClickLogin = this.onClickLogin.bind(this);
         this.onClickRegistration = this.onClickRegistration.bind(this);
-
+        this.onClickLogout = this.onClickLogout.bind(this);
+        this.onLoginChange = this.onLoginChange.bind(this);
     }
         render() {
             return (
@@ -50,6 +53,7 @@ class App extends React.Component<AppProps, AppState>{
                     <Header onClickLogin={this.onClickLogin}
                           onClickPlay={this.onClickPlay}
                           onClickRegistration={this.onClickRegistration}
+                          onClickLogout={this.onClickLogout}
                     />
                     <div className={"container"}>
                         <div className={"content"}>
@@ -64,12 +68,19 @@ class App extends React.Component<AppProps, AppState>{
     renderContent() {
         switch (+this.state.page) {
         case Page.Game:
-            return <Game />;
+            return <Game key={getLoginFromCookies() ? getLoginFromCookies() : "" }/>;
         case Page.Login:
-            return <Login />;
+            return <Login onLoginChange={this.onLoginChange}/>;
         case Page.Registration:
-            return <Registration />;
+            return <Registration onLoginChange={this.onLoginChange}/>;
         }
+    }
+
+    onLoginChange() {
+        this.setState({
+            page: Page.Game
+        });
+        this.forceUpdate();
     }
 
     onClickPlay() {
@@ -90,6 +101,11 @@ class App extends React.Component<AppProps, AppState>{
         this.setState({
             page: Page.Registration
         });
+    }
+
+    onClickLogout() {
+        deleteLoginCookies();
+        this.onLoginChange();
     }
 
 

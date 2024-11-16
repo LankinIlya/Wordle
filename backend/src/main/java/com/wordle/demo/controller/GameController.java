@@ -71,10 +71,14 @@ public class GameController {
             throws GameNotFoundException {
         response.setHeader("Access-Control-Allow-Credentials", "true");
         Long userId = getUserId(token);
+//        System.out.println("GameController.getGameState: " +
+//                "userId=" + userId + ", gameIdStr=" + gameIdStr);
         if(gameIdStr == null || gameIdStr.isEmpty()) {
+//            System.out.println("gameIdStr is empty");
             Game game = gameService.getGameByUser(userId);
             return new GameDto(game, gameService, wordService);
         } else {
+//            System.out.println("gameIdStr=" + gameIdStr);
             Long gameId = Long.parseLong(gameIdStr);
             Game game = gameService.getGameById(gameId, userId);
             return new GameDto(game, gameService, wordService);

@@ -2,7 +2,7 @@ import React from "react";
 import {getLoginFromCookies} from "../utils/getLogin";
 
 type RegistrationProps = {
-
+    onLoginChange: () => void
 };
 
 type RegistrationState = {
@@ -103,6 +103,7 @@ export class Registration extends React.Component<RegistrationProps,
                     document.cookie = "jwt=" + result;
                     alert("Successful registration\nCurrent login: "
                     + getLoginFromCookies());
+                    this.props.onLoginChange();
                 }
                 else {
                     alert("This user already exists\nCurrent login: "

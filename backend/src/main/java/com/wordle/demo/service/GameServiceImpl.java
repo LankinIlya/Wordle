@@ -113,11 +113,12 @@ public class GameServiceImpl implements GameService{
 
     @Override
     public Game getGameById(Long gameId, Long userId) {
+        System.out.println("gameId = " + gameId + " userId = " + userId);
         Optional<GameEntity> gameEntity = gameRepository.findById(gameId);
         if( gameEntity.isEmpty()
             || gameEntity.get().getUserId() != userId
             || !gameEntity.get().getActive() ) {
-            return newGame(userId);
+            return getGameByUser(userId);
         } else {
             return new Game(gameEntity.get(), wordService);
         }

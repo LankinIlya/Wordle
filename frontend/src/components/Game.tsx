@@ -67,6 +67,8 @@ class Game extends React.Component<GameProps, ComponentGameState> {
             divRef: React.createRef()
         }
 
+        console.log("Game constructor");
+
         this.props.startLoading();
 
         axios.request<GameDto>({
@@ -89,6 +91,9 @@ class Game extends React.Component<GameProps, ComponentGameState> {
     }
 
     render() {
+        console.log(this.props);
+        console.log("Game render");
+        console.log(document.cookie);
         if(this.props.isLoading) {
             return (
                 <div className={"wordle-grid"}>
@@ -147,7 +152,8 @@ class Game extends React.Component<GameProps, ComponentGameState> {
                 let flag = false;
                 const move = this.props.tries;
                 for(let i = 0; i < NUMBER_OF_LETTERS; i++) {
-                    if(isLetter(this.props.grid[move][i].letter)) {
+                    if(isLetter(this.props.grid[move][i].letter)
+                        && !this.props.grid[move][i].isSent) {
                         word += this.props.grid[move][i].letter;
                     } else {
                         flag = true;
@@ -191,6 +197,8 @@ class Game extends React.Component<GameProps, ComponentGameState> {
                 break;
             default:
                 if(isLetter(event.key)) {
+                    console.log("handle key event: default, letter = "
+                        + event.key.toUpperCase());
                     this.props.setLetter(event.key.toUpperCase());
                 }
 

@@ -192,6 +192,7 @@ export function gameReducer(state = initialState, action: GameAction) {
                     grid[i][j].letter = null;
                     grid[i][j].result = -1;
                     grid[i][j].isWaitingForInput = false;
+                    grid[i][j].isSent = false;
                 }
             }
 
