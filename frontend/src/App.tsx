@@ -8,6 +8,7 @@ import {RootState, store} from "./store/store";
 import {ConnectedProps, connect} from "react-redux";
 import {UserAction, setUser} from "./types/UserTypes";
 import {deleteLoginCookies} from "./utils/deleteLoginCookies";
+import {getLoginFromCookies} from "./utils/getLogin";
 
 const mapStateToProps = (state: RootState) => {
     return {
@@ -67,7 +68,7 @@ class App extends React.Component<AppProps, AppState>{
     renderContent() {
         switch (+this.state.page) {
         case Page.Game:
-            return <Game />;
+            return <Game key={getLoginFromCookies() ? getLoginFromCookies() : "" }/>;
         case Page.Login:
             return <Login onLoginChange={this.onLoginChange}/>;
         case Page.Registration:
@@ -76,6 +77,9 @@ class App extends React.Component<AppProps, AppState>{
     }
 
     onLoginChange() {
+        this.setState({
+            page: Page.Game
+        });
         this.forceUpdate();
     }
 
