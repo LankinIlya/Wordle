@@ -1,5 +1,6 @@
 import React, {Dispatch, KeyboardEvent, useRef} from "react";
 import {Cell} from "./Cell";
+import Keyboard from "./Keyboard";
 import {RootState} from "../store/store";
 import {connect, ConnectedProps} from "react-redux";
 import {
@@ -133,6 +134,9 @@ class Game extends React.Component<GameProps, ComponentGameState> {
                 <GameAnswer isFinished={this.props.isFinished}
                             isWon={this.props.isWon}
                             answer={this.props.answer}/>
+                <Keyboard handleBackspace={() => this.handleBackspace()}
+                          handleEnter={() => this.handleEnter()}
+                          handleDefault={(e) => this.handleDefault(e)}/>
             </div>
         );
     }
@@ -194,11 +198,12 @@ class Game extends React.Component<GameProps, ComponentGameState> {
                              this.props.currentInputCell.j + 1);
     }
 
-    handleDefault(event: KeyboardEvent<HTMLDivElement>){
-        if(isLetter(event.key)) {
+    handleDefault(Key: string){
+        console.log(this);
+        if(isLetter(Key)) {
             console.log("handle key event: default, letter = "
-                        + event.key.toUpperCase());
-            this.props.setLetter(event.key.toUpperCase());
+                        + Key.toUpperCase());
+            this.props.setLetter(Key.toUpperCase());
         }
     }
 
@@ -222,7 +227,7 @@ class Game extends React.Component<GameProps, ComponentGameState> {
                 this.handleArrowRight();
                 break;
             default:
-                this.handleDefault(event);
+                this.handleDefault(event.key);
                 break;
         }
 
