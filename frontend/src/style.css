@@ -40,7 +40,7 @@ header a:hover {
 
 .sidebar {
   background-color: #333344;
-  width: 27%;
+  width: 30%;
   height: 400px;
   margin-top: 15px;
   margin-right: 7px;
@@ -49,14 +49,16 @@ header a:hover {
 }
 
 .content {
-  width: 70%;
-  height: 500px;
+  width: 22%;
+  height: 30%;
+  margin-left: 35%;
   border-radius: 5px;
   padding: 5px;
 }
 
 .wordle-grid {
-  height: 400px;
+  /*width: 100%;
+  height: 100%;*/
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -64,16 +66,16 @@ header a:hover {
 }
 
 .row {
-  width: 50%;
+  width: 100%;
   /*height: 15%;*/
-  margin-left: 25%;
+  /*margin-left: 25%*/;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .cell_container {
 
-  width: 15%;
+  width: 17%;
   aspect-ratio: 1 / 1;
   margin-top: 8px;
 }

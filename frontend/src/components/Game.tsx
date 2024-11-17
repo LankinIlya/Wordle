@@ -141,6 +141,67 @@ class Game extends React.Component<GameProps, ComponentGameState> {
         this.state.divRef.current.focus();
     }
 
+    handleBackspace(){
+        this.props.backSpace();
+    }
+
+    handleEnter(){
+        const gameid = getFromCookies("game_id");
+        let word = "";
+        let flag = false;
+        const move = this.props.tries;
+        for(let i = 0; i < NUMBER_OF_LETTERS; i++) {
+            if(isLetter(this.props.grid[move][i].letter)
+                && !this.props.grid[move][i].isSent) {
+                word += this.props.grid[move][i].letter;
+            } else {
+                flag = true;
+                break;
+            }
+        }
+
+        if(gameid && !flag) {
+            this.props.sendWord();
+            const data: TryWordDto = {
+                gameId: +gameid,
+                move: move,
+                word: word.toLowerCase()
+            }
+
+            axios.request<TryWordResponseDto>({
+                url: baseUrl + "game/try_word",
+                method: "POST",
+                withCredentials: true,
+                headers: {
+                    "Content-type": "application/json"
+                },
+                data: JSON.stringify(data),
+            }).then((response) => {
+                const res = JSON.parse(response.data.toString());
+                console.log(res);
+                this.props.addTry(res);
+            });
+        }
+    }
+
+    handleArrowLeft(){
+        this.props.focusCell(this.props.currentInputCell.i,
+                             this.props.currentInputCell.j - 1);
+    }
+
+    handleArrowRight(){
+        this.props.focusCell(this.props.currentInputCell.i,
+                             this.props.currentInputCell.j + 1);
+    }
+
+    handleDefault(event: KeyboardEvent<HTMLDivElement>){
+        if(isLetter(event.key)) {
+            console.log("handle key event: default, letter = "
+                        + event.key.toUpperCase());
+            this.props.setLetter(event.key.toUpperCase());
+        }
+    }
+
     handleKeyEvent(event: KeyboardEvent<HTMLDivElement>) {
         const code = event.code;
 
@@ -149,64 +210,19 @@ class Game extends React.Component<GameProps, ComponentGameState> {
 
         switch (code) {
             case 'Backspace':
-                this.props.backSpace();
+                this.handleBackspace();
                 break;
             case 'Enter':
-                const gameid = getFromCookies("game_id");
-                let word = "";
-                let flag = false;
-                const move = this.props.tries;
-                for(let i = 0; i < NUMBER_OF_LETTERS; i++) {
-                    if(isLetter(this.props.grid[move][i].letter)
-                        && !this.props.grid[move][i].isSent) {
-                        word += this.props.grid[move][i].letter;
-                    } else {
-                        flag = true;
-                        break;
-                    }
-                }
-
-                if(gameid && !flag) {
-                    this.props.sendWord();
-                    const data: TryWordDto = {
-                        gameId: +gameid,
-                        move: move,
-                        word: word.toLowerCase()
-                    }
-
-                    axios.request<TryWordResponseDto>({
-                        url: baseUrl + "game/try_word",
-                        method: "POST",
-                        withCredentials: true,
-                        headers: {
-                            "Content-type": "application/json"
-                        },
-                        data: JSON.stringify(data),
-                    }).then((response) => {
-                        const res = JSON.parse(response.data.toString());
-                        console.log(res);
-                        this.props.addTry(res);
-                    });
-                }
-
+                this.handleEnter();
                 break;
             case 'ArrowLeft':
-                this.props.focusCell(
-                    this.props.currentInputCell.i
-                    , this.props.currentInputCell.j - 1 );
+                this.handleArrowLeft();
                 break;
             case 'ArrowRight':
-                this.props.focusCell(
-                    this.props.currentInputCell.i
-                    , this.props.currentInputCell.j + 1 );
+                this.handleArrowRight();
                 break;
             default:
-                if(isLetter(event.key)) {
-                    console.log("handle key event: default, letter = "
-                        + event.key.toUpperCase());
-                    this.props.setLetter(event.key.toUpperCase());
-                }
-
+                this.handleDefault(event);
                 break;
         }
 
