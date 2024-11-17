@@ -109,6 +109,7 @@ class Game extends React.Component<GameProps, ComponentGameState> {
                  onKeyDown={ (event) =>
                      this.handleKeyEvent(event)
                 }
+                 onBlur={() => this.focusGame()}
             >
                 {this.props.grid.map((row) =>
                     (<div className={"row"} key={"row_" + row[0].id}>
@@ -134,6 +135,10 @@ class Game extends React.Component<GameProps, ComponentGameState> {
                             answer={this.props.answer}/>
             </div>
         );
+    }
+
+    focusGame() {
+        this.state.divRef.current.focus();
     }
 
     handleKeyEvent(event: KeyboardEvent<HTMLDivElement>) {
