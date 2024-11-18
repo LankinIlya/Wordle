@@ -32,7 +32,7 @@ public class GameController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
-    @CrossOrigin(origins = origin)
+    @CrossOrigin//(origins = origin)
     @GetMapping("/new_game")
     public String newGame() {
         Long userId = 0L;
@@ -42,7 +42,7 @@ public class GameController {
 
 
 
-    @CrossOrigin(origins = origin)
+    @CrossOrigin//(origins = origin)
     @PostMapping("/try_word")
     public TryWordResponseDto tryWord(
             @CookieValue(value = "jwt", defaultValue = "") String token,
@@ -62,7 +62,7 @@ public class GameController {
         }
     }
 
-    @CrossOrigin(origins = origin)
+    @CrossOrigin//(origins = origin)
     @GetMapping("/get_game")
     public GameDto getGameState(
             @CookieValue(value = "jwt", defaultValue = "") String token,

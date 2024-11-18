@@ -13,19 +13,30 @@ type KeyboardButtonState = {
 export class KeyboardButton extends React.Component<KeyboardButtonProps, KeyboardButtonState> {
     render() {
         let className = "keyboard_button";
-        if(this.props.letter === "BackSpace"){
-            className = "keyboard_button_BackSpace"
+        switch(this.props.letter) {
+            case "BackSpace":
+                className += " keyboard_button_BackSpace";
+                break;
+            case "Enter":
+                className += " keyboard_button_Enter"
+                break;
+            case "Restart":
+                className += " keyboard_button_Restart"
+                break;
+            default:
+                className += " keyboard_button";
+                break;
         }
-        if(this.props.letter === "Enter"){
-            className = "keyboard_button_Enter"
-        }
-        return (
 
-            <div className={className}
-                 // data-result={this.props.result}
-                 onClick={this.props.onClick}>
+        return (
+            <button type={"submit"} className={className} onClick={this.props.onClick}>
                 {this.props.letter?.toUpperCase()}
-            </div>
+            </button>
+            // <div className={className}
+            //      // data-result={this.props.result}
+            //      onClick={this.props.onClick}>
+            //     {this.props.letter?.toUpperCase()}
+            // </div>
 
         );
     }

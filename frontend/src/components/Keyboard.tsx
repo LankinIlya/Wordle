@@ -28,6 +28,9 @@ interface KeyboardProps {
     handleBackspace: () => void,
     handleEnter: () => void,
     handleDefault: (Key: string) => void;
+    restart: () => void,
+    isFinished: boolean | null,
+    isWon: boolean
 }
 
 type KeyboardState = {
@@ -39,12 +42,33 @@ class Keyboard extends React.Component<KeyboardProps, KeyboardState> {
         console.log(this.props);
         console.log("Keyboard render");
         console.log(document.cookie);
+        if(this.props.isFinished) {
+            return (
+                <div className={"keyboard-grid"}>
+                    <div className={"keyboard-row"}
+                         key={"keyboard-row_end_game"}>
+                        <h3>
+                            {this.props.isWon ? "You won!" : "You lost("}
+                        </h3>
+                    </div>
+                    <div className={"keyboard-row"}
+                         key={"keyboard-row_restart"}>
+                        <KeyboardButton letter={"Restart"}
+                                        onClick={
+                                            () => this.props.restart()
+                                        }
+                        />
+                    </div>
+
+                </div>
+            )
+        }
         return (
             <div className={"keyboard-grid"}>
                 {keyboard.map((row: string[], i: number) =>
                     (<div className={"keyboard-row"} key={"keyboard-row_" + i}>
-                        {row.map((el: string, j: number) =>
-                                <KeyboardButton key={"keyboard_button_component_" + i + "_" + j}
+                    {row.map((el: string, j: number) =>
+                            <KeyboardButton key={"keyboard_button_component_" + i + "_" + j}
                                       letter={el}
                                       onClick={() => this.props.handleDefault(el)}
                                 />)

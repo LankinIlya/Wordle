@@ -18,8 +18,10 @@ public class CorsFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
         System.out.println("Filter");
+        System.out.println(request.getHeader("Origin"));
         response.setHeader("Access-Control-Allow-Origin",
-                "http://localhost:3000");
+                request.getHeader("Origin"));
+//                "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods",
                 "GET, POST, PUT, DELETE, OPTIONS");

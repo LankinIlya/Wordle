@@ -38,6 +38,21 @@ header a:hover {
   margin-top: 20px;
 }
 
+@media screen and (min-width: 800px) {
+  .container {
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    margin-left: 35%;
+  }
+}
+
 .sidebar {
   background-color: #333344;
   width: 30%;
@@ -54,6 +69,22 @@ header a:hover {
   margin-left: 35%;
   border-radius: 5px;
   padding: 5px;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    margin-left: 5%;
+    width:90%;
+  }
+
+  .content {
+    width: 90%;
+    margin-left: 5%;
+  }
 }
 
 .wordle-grid {
@@ -97,6 +128,12 @@ header a:hover {
   position: relative;
 }
 
+@media screen and (max-width: 800px) {
+  .cell{
+    /*font-size: 3rem;*/
+  }
+}
+
 .cell[data-result="0"] {
   background-color: #CE0000;
 }
@@ -113,11 +150,17 @@ header a:hover {
   background-color: #0e7a01;
 }
 
-.cell:hover[data-result="-1"][data-inputtingrow="true"] {
+.cell:hover[data-result="-1"][data-inputtingrow="true"][data-inputting="false"] {
   transform: scale(1.06);
   transform: translate(-3%, -3%);
-  transition: 200ms;
+  transition: 100ms;
   background-color: #E0E0F0;
+  cursor: pointer;
+}
+
+.cell:hover[data-result="-1"][data-inputtingrow="true"][data-inputting="true"] {
+  background-color: #E0E0F0;
+  cursor: pointer;
 }
 
 .cell[data-inputting="true"] {
@@ -126,10 +169,11 @@ header a:hover {
   /*border-radius: 20px;*/
 
   border: 3px solid yellow;
+  transform: translate(-3px, -3px);
   /*border: 3px solid black;*/
 
   /*transform: scale(1.06);*/
-  /*transition: 200ms;*/
+  transition: 20ms;
   /*background-color: #D0D0E0;*/
 }
 
@@ -184,7 +228,9 @@ header a:hover {
 }
 
 .keyboard_button {
-  width: 8%;
+  /*width: 8%;*/
+  width: fit-content;
+  /*min-width: 8%;*/
   height: 100%;
   margin-left: 1%;
   margin-top: 5%;
@@ -199,41 +245,24 @@ header a:hover {
   position: relative;
 }
 
+.keyboard_button:hover {
+    cursor: pointer;
+}
+
 .keyboard_button_BackSpace{
-    width:  fit-content;
-    height: 100%;
-    margin-left: 1%;
-    margin-top: 5%;
-    /*transform: translate(-50%, -50%);*/
-    background-color: #AAAAAA;
-    color: black;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 1.5rem;
-    /*line-height: 40px;*/
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    position: relative;
+    padding: 2px 5px;
+    /*font-size: 1rem;*/
 }
 
 .keyboard_button_Enter{
-    width:  fit-content;
-    height: 100%;
-    margin-left: 1%;
-    margin-top: 5%;
-    /*transform: translate(-50%, -50%);*/
-    background-color: #AAAAAA;
-    color: black;
-    border-radius: 5px;
-    text-align: center;
-    font-size: 1.5rem;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    /*line-height: 40px;*/
+    /*font-size: 1rem;*/
+    padding: 2px 5px;
+}
 
-    position: relative;
+.keyboard_button_Restart{
+    padding: 2px 5px;
+}
+
+.keyboard-row h3 {
+    font-size: 2rem;
 }
