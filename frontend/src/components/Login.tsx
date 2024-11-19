@@ -1,5 +1,6 @@
 import React from "react";
 import {getLoginFromCookies} from "../utils/getLogin";
+import {baseUrl} from "../index";
 
 type LoginProps = {
     onLoginChange: () => void
@@ -19,7 +20,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
         const loginValue = (document
         .getElementById("username") as HTMLInputElement).value;
 
-        fetch('http://localhost:8080/loginPage', {
+        fetch(baseUrl + 'loginPage', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
