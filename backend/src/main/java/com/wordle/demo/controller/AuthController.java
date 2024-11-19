@@ -65,7 +65,7 @@ public class AuthController {
     }
 
     @PostMapping("/checkLogin")
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin
     public String checkLogin(@CookieValue("jwt") String token,
                              HttpServletResponse response) {
         response.setHeader("Access-Control-Allow-Credentials", "true");

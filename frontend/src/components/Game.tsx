@@ -20,6 +20,7 @@ import {TryWordDto, TryWordResponseDto} from "../types/TryWord";
 import {getFromCookies} from "../utils/getFromCookies";
 import {baseUrl} from "../index";
 import {GameAnswer} from "./GameAnswer";
+import {KeyboardButton} from "./KeyboardButton";
 
 const mapStateToProps = (state: RootState) => {
     return {
@@ -70,16 +71,7 @@ class Game extends React.Component<GameProps, ComponentGameState> {
 
         console.log("Game constructor");
 
-        this.props.startLoading();
-
-        axios.request<GameDto>({
-            url: baseUrl + 'game/get_game',
-            method: "GET",
-            withCredentials: true
-        }).then((response) => {
-            const res = JSON.parse(response.data.toString());
-            this.props.loadGame(res);
-        });
+        this.getGameStateFromServer();
     }
     componentDidMount() {
         if(!this.props.isLoading)
@@ -136,9 +128,43 @@ class Game extends React.Component<GameProps, ComponentGameState> {
                             answer={this.props.answer}/>
                 <Keyboard handleBackspace={() => this.handleBackspace()}
                           handleEnter={() => this.handleEnter()}
-                          handleDefault={(e) => this.handleDefault(e)}/>
+                          handleDefault={(e) => this.handleDefault(e)}
+                          restart={() => this.getGameStateFromServer()}
+                          isFinished={this.props.isFinished}
+                          isWon={this.props.isWon}/>
             </div>
         );
+    }
+
+    getGameStateFromServer() {
+        this.props.startLoading();
+
+        axios.request<GameDto>({
+            url: baseUrl + 'game/get_game',
+            method: "GET",
+            withCredentials: true
+        }).then((response) => {
+            const res = JSON.parse(response.data.toString());
+            this.props.loadGame(res);
+        });
+    }
+
+    getButtons() {
+        if(this.props.isFinished) {
+            return (
+                <div>
+                    <h3>{this.props.isWon ? "You won!" : "You lost("}</h3>
+                    <KeyboardButton letter={"Restart"}
+                                    onClick={
+                                        () => this.getGameStateFromServer()
+                                    }
+                    />
+                </div>
+            )
+        } else {
+            return
+        }
+
     }
 
     focusGame() {
