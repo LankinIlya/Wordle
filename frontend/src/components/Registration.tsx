@@ -1,5 +1,6 @@
 import React from "react";
 import {getLoginFromCookies} from "../utils/getLogin";
+import {baseUrl} from "../index";
 
 type RegistrationProps = {
     onLoginChange: () => void
@@ -85,7 +86,7 @@ export class Registration extends React.Component<RegistrationProps,
             alert("Data is invalid");
             return;
         }
-        fetch('http://localhost:8080/new-user', {
+        fetch(baseUrl + 'new-user', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
