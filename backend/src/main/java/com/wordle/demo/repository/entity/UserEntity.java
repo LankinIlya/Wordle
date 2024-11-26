@@ -29,6 +29,8 @@ public class UserEntity {
         this.id = user.getId();
         this.login = user.getLogin();
         this.password = user.getPassword();
+        this.games = user.getGames();
+        this.wins = user.getWins();
     }
 
     public Long getId() {
@@ -41,6 +43,14 @@ public class UserEntity {
 
     public String getPassword() {
         return password;
+    }
+
+    public Integer getGames() {
+        return games;
+    }
+
+    public Integer getWins() {
+        return wins;
     }
 
     public void setId(Long id) {
