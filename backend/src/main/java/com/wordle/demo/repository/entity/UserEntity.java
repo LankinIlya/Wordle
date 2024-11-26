@@ -14,11 +14,16 @@ public class UserEntity {
     @Column(unique = true)
     private String login;
     private String password;
+    private Integer games;
+    private Integer wins;
 
     public UserEntity() {}
-    public UserEntity(String login, String password) {
+    public UserEntity(String login, String password, Integer games, Integer wins) {
         this.login = login;
         this.password = password;
+        this.games = games;
+        this.wins = wins;
+
     }
     public UserEntity(MyUser user) {
         this.id = user.getId();

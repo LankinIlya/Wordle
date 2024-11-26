@@ -9,6 +9,8 @@ public final class MyUser {
     private Long id;
     private String login;
     private String password;
+    private Integer games;
+    private Integer wins;
 
     public Long getId() {
         return id;
@@ -30,20 +32,33 @@ public final class MyUser {
         return password;
     }
 
+    public Integer getGames() {
+        return games;
+    }
+
+    public Integer getWins() {
+        return wins;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
 
-    public MyUser(String login, String password) {
+    public MyUser(String login, String password, Integer games, Integer wins) {
         this.login = login;
         this.password = password;
+        this.games = games;
+        this.wins = wins;
     }
 
     public MyUser(UserEntity userEntity) {
         this.id = userEntity.getId();
         this.login = userEntity.getLogin();
         this.password = userEntity.getPassword();
+        this.games = userEntity.getGames();
+        this.wins = userEntity.getWins();
+
     }
 
     public String login() {

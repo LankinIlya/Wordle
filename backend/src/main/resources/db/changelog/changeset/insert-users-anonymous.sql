@@ -4,5 +4,5 @@
 
 TRUNCATE users;
 
-INSERT INTO users(id, login, password) VALUES
-(1, 'anonymous', 'abacaba');
+INSERT INTO users(id, login, password, games, wins) VALUES
+(1, 'anonymous', 'abacaba', 0, 0);
