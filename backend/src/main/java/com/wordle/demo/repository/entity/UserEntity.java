@@ -18,7 +18,8 @@ public class UserEntity {
     private Integer wins;
 
     public UserEntity() {}
-    public UserEntity(String login, String password, Integer games, Integer wins) {
+    public UserEntity(String login, String password,
+                      Integer games, Integer wins) {
         this.login = login;
         this.password = password;
         this.games = games;

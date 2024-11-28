@@ -57,12 +57,14 @@ public class UserService {
         ArrayList<UserRating> topByRatio = new ArrayList<>();
 
         for (UserEntity user : topWins) {
-            topByWins.add(new UserRating(user.getLogin(), user.getWins(), user.getGames()));
+            topByWins.add(new UserRating(user.getLogin(),
+                    user.getWins(), user.getGames()));
 
         }
 
         for (UserEntity user : topRatio) {
-            topByRatio.add(new UserRating(user.getLogin(), user.getWins(), user.getGames()));
+            topByRatio.add(new UserRating(user.getLogin(),
+                    user.getWins(), user.getGames()));
 
         }
         return new TopsDto(topByWins, topByRatio);

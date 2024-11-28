@@ -102,7 +102,8 @@ public class GameServiceImpl implements GameService{
             if (game.getUserId() != MyUser.ANONYMOUS_ID){
                 userRepository.incWins(game.getUserId() );
             }
-            return new TryWordResult(result, false, win, game.getWord().text());
+            return new TryWordResult(result, false, win,
+                    game.getWord().text());
         }
 
         return new TryWordResult(result);
