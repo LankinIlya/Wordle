@@ -36,7 +36,8 @@ public class GameServiceImpl implements GameService{
     public GameServiceImpl(WordRepository wordRepository,
                            GameRepository gameRepository,
                            TryWordRepository tryWordRepository,
-                           WordService wordService, UserRepository userRepository) {
+                           WordService wordService,
+                           UserRepository userRepository) {
         this.wordRepository = wordRepository;
         this.gameRepository = gameRepository;
         this.tryWordRepository = tryWordRepository;
