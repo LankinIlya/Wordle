@@ -52,15 +52,35 @@ header a:hover {
     margin-left: 35%;
   }
 }
+.my_rating {
+  border: 3px solid;
+  border-color: #EEE;
+}
 
+table, th, td {
+  border: 1px solid;
+  border-color: #AAA
+}
+th, td {
+  padding: 3px;
+  text-allign: center;
+}
+
+table {
+  width: 90%;
+  margin-top: 20px;
+  margin-left: 5%;
+  border-collapse: collapse;
+}
 .sidebar {
   background-color: #333344;
   width: 30%;
-  height: 400px;
+  height: 800px;
   margin-top: 15px;
   margin-right: 7px;
   border-radius: 5px;
   padding: 5px;
+
 }
 
 .content {
