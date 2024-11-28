@@ -33,6 +33,8 @@ public class UserEntity {
         this.wins = user.getWins();
     }
 
+
+
     public Long getId() {
         return id;
     }

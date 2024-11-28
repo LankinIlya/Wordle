@@ -1,6 +1,7 @@
 package com.wordle.demo.controller;
 
 import com.wordle.demo.controller.dto.GameDto;
+import com.wordle.demo.controller.dto.TopsDto;
 import com.wordle.demo.controller.dto.TryWordDto;
 import com.wordle.demo.controller.dto.TryWordResponseDto;
 import com.wordle.demo.exception.GameAlreadyFinishedException;
@@ -9,6 +10,7 @@ import com.wordle.demo.exception.IncorrectGuessException;
 import com.wordle.demo.exception.WordNotFoundException;
 import com.wordle.demo.jwt.JwtTokenUtil;
 import com.wordle.demo.service.GameService;
+import com.wordle.demo.service.UserService;
 import com.wordle.demo.service.WordService;
 import com.wordle.demo.service.model.Game;
 import com.wordle.demo.service.model.MyUser;
@@ -23,13 +25,15 @@ public class GameController {
     private final WordService wordService;
     private final JwtTokenUtil jwtTokenUtil;
     private static final String origin = "http://localhost:3000";
+    private final UserService userService;
 
     public GameController(GameService gameService,
                           WordService wordService,
-                          JwtTokenUtil jwtTokenUtil) {
+                          JwtTokenUtil jwtTokenUtil, UserService userService) {
         this.gameService = gameService;
         this.wordService = wordService;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.userService = userService;
     }
 
     @CrossOrigin//(origins = origin)
@@ -85,9 +89,30 @@ public class GameController {
         }
     }
 
+
+    @CrossOrigin//(origins = origin)
+    @GetMapping("/get_tops")
+    public TopsDto getTops(
+            @CookieValue(value = "jwt", defaultValue = "") String token,
+            HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        Long userId = getUserId(token);
+        return userService.getTops(userId);
+    }
+
+
+
+
     Long getUserId(String token) {
         return (token.isEmpty()
                 ? MyUser.ANONYMOUS_ID
                 : jwtTokenUtil.getIdFromToken(token));
     }
+
+
+
+
+
+
+
 }
