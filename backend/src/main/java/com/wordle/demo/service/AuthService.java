@@ -18,6 +18,6 @@ public class AuthService {
 
     public void addUser(MyUser user) {
         repository.save(new UserEntity(user.getLogin(),
-                passwordEncoder.encode(user.password())));
+                passwordEncoder.encode(user.password()), 0, 0));
     }
 }

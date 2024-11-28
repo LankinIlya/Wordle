@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/changeset/create-games-table.sql
   - include:
       file: db/changelog/changeset/create-trywords-table.sql
+  - include:
+      file: db/changelog/changeset/insert-users-for-debug.sql

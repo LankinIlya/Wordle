@@ -34,7 +34,8 @@ public class AuthController {
             return "not ok";
         } catch(UsernameNotFoundException e) {
             authService.addUser(new MyUser(userDto.login(),
-                                            userDto.password()));
+                                            userDto.password(),
+                                             userDto.games(), userDto.wins()));
             MyUser user = userService.getUserByUsername(userDto.login());
 
             response.setHeader("Access-Control-Allow-Credentials", "true");

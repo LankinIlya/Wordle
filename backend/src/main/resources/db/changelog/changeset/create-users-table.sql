@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS users (
     id bigint,
     login varchar(32) UNIQUE,
     password varchar(256),
+    games int,
+    wins int,
     CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
