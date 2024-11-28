@@ -37,15 +37,27 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                     "LIMIT 10 ")
     ArrayList<UserEntity> getTopByWins();
 
-    @Query(
+
+        @Query(
             nativeQuery = true,
             value = "SELECT * " +
                     "FROM users " +
                     "WHERE users.games > 0 " +
                     "AND users.id != 1 " +
-                    "ORDER BY (users.wins / users.games) DESC " +
+                    "ORDER BY (users.wins * 1.0 / users.games ) DESC " +
                     "LIMIT 10")
+
     ArrayList<UserEntity> getTopByRatio();
+//
+//    @Query(
+//            nativeQuery = true,
+//            value = "SELECT * " +
+//                    "FROM users " +
+//                    "WHERE users.games > 0 " +
+//                    "AND users.id != 1 " +
+//                    "ORDER BY users.games DESC " +
+//                    "LIMIT 10")
+//    ArrayList<UserEntity> getTopByRatio();
 
 
     @Modifying
@@ -67,3 +79,29 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                     "WHERE id = :user_id  ")
     void incWins(@Param("user_id") Long userId);
 }
+
+
+
+//    @Query(
+//            nativeQuery = true,
+//            value = "SELECT * " +
+//                    "FROM users " +
+//                    "WHERE users.games > 0 " +
+//                    "AND users.id != 1 " +
+//                    "ORDER BY (users.wins * 1.0 / users.games ) DESC " +
+//                    "LIMIT 10")
+
+//    ArrayList<UserEntity> getTopByRatio();
+
+
+//select * from users
+//        where users.games > 0
+//ORDER BY users.games DESC;
+//
+//
+//SELECT *
+//        FROM users
+//        WHERE users.games > 0
+//        AND users.id != 1
+//        ORDER BY users.games DESC
+//        LIMIT 10
