@@ -83,7 +83,7 @@ export class Registration extends React.Component<RegistrationProps,
         const loginValue = (document
         .getElementById("username") as HTMLInputElement).value;
         if(!this.checkDataValidity()) {
-            alert("Data is invalid");
+            // alert("Data is invalid");
             return;
         }
         fetch(baseUrl + 'new-user', {
@@ -102,18 +102,18 @@ export class Registration extends React.Component<RegistrationProps,
                 if(result !== "not ok") {
                     document.cookie = "login=" + loginValue;
                     document.cookie = "jwt=" + result;
-                    alert("Successful registration\nCurrent login: "
-                    + getLoginFromCookies());
+                    // alert("Successful registration\nCurrent login: "
+                    // + getLoginFromCookies());
                     this.props.onLoginChange();
                 }
                 else {
-                    alert("This user already exists\nCurrent login: "
-                    + getLoginFromCookies());
+                    // alert("This user already exists\nCurrent login: "
+                    // + getLoginFromCookies());
                 }
               })
     }
     render() {
-        return (<div>
+        return (<div className={"registration_div"}>
                     <input type="text" id="username"
                     placeholder="Логин"
                     onChange={this.changeLogin}/><br />

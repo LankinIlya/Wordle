@@ -52,19 +52,20 @@ header a:hover {
     margin-left: 35%;
   }
 }
-.my_rating {
-  border: 3px solid;
-  border-color: #EEE;
-}
+
 
 table, th, td {
-  border: 1px solid;
-  border-color: #AAA
+  border: 1px solid #AAA;
 }
 th, td {
   padding: 3px;
   text-allign: center;
 }
+
+.my_rating {
+  border: 3px solid yellow;
+}
+
 
 table {
   width: 90%;
@@ -86,7 +87,7 @@ table {
 .content {
   width: 22%;
   height: 30%;
-  margin-left: 35%;
+  margin-left: 25%;
   border-radius: 5px;
   padding: 5px;
 }
@@ -285,4 +286,32 @@ table {
 
 .keyboard-row h3 {
     font-size: 2rem;
+}
+
+.login_div, .registration_div {
+  margin-top: 100px;
+  text-align: center;
+  width: 100%;
+}
+
+.login_div *, .registration_div * {
+  font-size: 24px;
+  margin-top: 10px;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+
+@media screen and (min-width: 800px) {
+  .login_div, .registration_div {
+    width: 100%;
+    /*margin-left: 35%;*/
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .login_div, .registration_div {
+    width: 100%;
+    /*margin-left: 35%;*/
+  }
 }
