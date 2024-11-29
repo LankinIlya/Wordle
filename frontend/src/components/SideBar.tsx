@@ -5,20 +5,32 @@ import axios from "axios-typescript";
 import {KeyboardButton} from "./KeyboardButton";
 import {getFromCookies} from "../utils/getFromCookies";
 type SideBarProps = {
-
+    login: string | undefined,
+    gameId: number | undefined,
+    finished: boolean | null
 };
 
 type SideBarState = {
-    tops: TopsDto | null
-
-
+    tops: TopsDto | null,
+    key: string
 };
 
 export class SideBar extends React.Component<SideBarProps, SideBarState> {
 
     constructor(props : SideBarProps) {
         super(props);
-        this.state = {tops:null}
+        this.state = {
+            tops: null,
+            key: this.calc_key()
+        };
+        this.ask();
+    }
+
+    ask() {
+        this.setState({
+            tops: null,
+            key: this.calc_key()
+        });
         axios.request<TopsDto>({
             url: baseUrl + 'game/get_tops',
             method: "GET",
@@ -26,14 +38,24 @@ export class SideBar extends React.Component<SideBarProps, SideBarState> {
         }).then((response) => {
             const res = JSON.parse(response.data.toString());
             console.log(res);
-            this.setState({tops:res})
+            this.setState({
+                tops:res,
+                key: this.calc_key()
+            })
         });
+    }
 
-
-
+    calc_key() {
+        return `sidebar_${
+            this.props.login}_${
+            this.props.gameId}_${
+            this.props.finished}`;
     }
 
     render() {
+        if(this.state.key != this.calc_key()) {
+            this.ask();
+        }
         if (this.state.tops === null) {
             return (
                 <div className={"sidebar"}>Loading...</div>
@@ -41,7 +63,6 @@ export class SideBar extends React.Component<SideBarProps, SideBarState> {
         }
         return (
             <div className={"sidebar"}>
-
                 <table>
                     <tr>
                         <th>User</th>
@@ -52,11 +73,11 @@ export class SideBar extends React.Component<SideBarProps, SideBarState> {
                         (<tr>
                             <td className=
                                     {el.login ===
-                                    getFromCookies("login") ? "my_rating" : ""}>
+                                    this.props.login ? "my_rating" : ""}>
                                 {el.login}</td>
                             <td className=
                                     {el.login ===
-                                    getFromCookies("login") ? "my_rating" : ""}>
+                                    this.props.login ? "my_rating" : ""}>
                                 {el.wins}</td>
 
                         </tr>))
@@ -68,18 +89,18 @@ export class SideBar extends React.Component<SideBarProps, SideBarState> {
                 <table>
                     <tr>
                         <th>User</th>
-                        <th>Games</th>
+                        <th>Ratio</th>
                     </tr>
 
                     {this.state.tops.topRatio.map((el: UserRating, j: number) =>
                         (<tr>
                             <td className=
                                     {el.login ===
-                                    getFromCookies("login") ? "my_rating" : ""}>
+                                    this.props.login ? "my_rating" : ""}>
                                 {el.login}</td>
                             <td className=
                                     {el.login ===
-                                    getFromCookies("login") ? "my_rating" : ""}>
+                                    this.props.login ? "my_rating" : ""}>
                                 {(el.games === 0 ? 0 :
                                 el.wins / el.games).toFixed(2)}
 

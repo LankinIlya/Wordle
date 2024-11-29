@@ -37,18 +37,18 @@ export class Login extends React.Component<LoginProps, LoginState> {
                     document.cookie = "login=" + loginValue;
                     document.cookie = "jwt=" + result;
                     this.props.onLoginChange();
-                    alert("Successful login\nCurrent login: "
-                    + getLoginFromCookies());
+                    // alert("Successful login\nCurrent login: "
+                    // + getLoginFromCookies());
                 }
                 else {
-                    alert("Wrong login or password\nCurrent login: "
-                    + getLoginFromCookies());
+                    // alert("Wrong login or password\nCurrent login: "
+                    // + getLoginFromCookies());
                 }
               })
     }
 
     render() {
-        return (<div>
+        return (<div className={"login_div"}>
                     <input type="text" id="username"
                     name="username" placeholder="Логин" /><br />
 

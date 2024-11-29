@@ -9,6 +9,7 @@ import {ConnectedProps, connect} from "react-redux";
 import {UserAction, setUser} from "./types/UserTypes";
 import {deleteLoginCookies} from "./utils/deleteLoginCookies";
 import {getLoginFromCookies} from "./utils/getLogin";
+import {getFromCookies} from "./utils/getFromCookies";
 
 const mapStateToProps = (state: RootState) => {
     return {
@@ -59,7 +60,9 @@ class App extends React.Component<AppProps, AppState>{
                         <div className={"content"}>
                             {this.renderContent()}
                         </div>
-                        <SideBar />
+                        <SideBar login={getFromCookies("login")}
+                                 gameId={Number(getFromCookies("game_id"))}
+                                 finished={this.props.game.isFinished}/>
                     </div>
                 </div>
             );

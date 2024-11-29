@@ -100,7 +100,7 @@ public class GameServiceImpl implements GameService{
         numberOfTries++;
         if(numberOfTries == NUMBER_OF_WORDS || win) {
             gameRepository.finishGame(game.getId(), win);
-            if (game.getUserId() != MyUser.ANONYMOUS_ID){
+            if (game.getUserId() != MyUser.ANONYMOUS_ID && win) {
                 userRepository.incWins(game.getUserId() );
             }
             return new TryWordResult(result, false, win,
